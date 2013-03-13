@@ -19,7 +19,11 @@ for x = 1:20
     
     state = nextState;
 end
+figure(1);
 plotSequence(states);
+
+figure(2);
+plot(states);
 states
 actions
 
