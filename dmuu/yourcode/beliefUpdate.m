@@ -4,7 +4,7 @@ function b1 = beliefUpdate(b,a,o)
 
 global problem;
 
-b1=zeros(1,problem.nrStates);
+%b1=zeros(1,problem.nrStates);
 
 transitionMatrix = getTransisitionMatrix(a);
 
