@@ -11,6 +11,4 @@ for i = 1:length(s)
 end
 
 states = s;
-%b(s)=1;
-b
 plotSingleBelief(b./max(b));

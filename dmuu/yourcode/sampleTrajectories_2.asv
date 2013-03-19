@@ -11,7 +11,7 @@ startState = min(find(cumsum(problem.start)>rand));
 state = startState;
 states = [state];
 actions = [];
-for x = 1:80
+for x = 1:50
     % Select next action
     [foo,nextAction] = max(b*Q);
     
@@ -20,9 +20,7 @@ for x = 1:80
     actions = [actions, nextAction];
     
     state = nextState;
-    observation = randi([1,problem.nrObservations-1]);
-    %observation = 1;
-    nextb = beliefUpdate(b,nextAction,observation);
+    nextb = nextb + beliefUpdate(b,nextAction,i);
     b = nextb/sum(abs(nextb));
     sum(abs(b))
 end

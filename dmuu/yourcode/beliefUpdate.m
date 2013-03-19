@@ -10,6 +10,7 @@ transitionMatrix = getTransitionMatrix(a);
 observationMatrix = getObservationMatrix(a);
 
 b1 = (observationMatrix(:,o) .* (transitionMatrix*b.')).';
+
 end
 
 
