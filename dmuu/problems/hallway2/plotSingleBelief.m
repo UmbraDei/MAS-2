@@ -30,4 +30,4 @@ bar3(belief,1,'detached','b');
 [maxX maxY]=size(belief);
 set(gca,'XLim',[0 maxY+1]);
 set(gca,'YLim',[0 maxX+1]);
-set(gca,'ZLim',[0 max(P)+1]);
+set(gca,'ZLim',[0 1]);

@@ -51,7 +51,6 @@ for i=1:length(I)
   end
   
   color=(1-P(I(i)))*[1 1 1];
-  
   h=plot(xy(1),xy(2),'ok','MarkerSize',7,'MarkerFaceColor',color, ...
          'MarkerEdgeColor',[0 0 0]);
 end
