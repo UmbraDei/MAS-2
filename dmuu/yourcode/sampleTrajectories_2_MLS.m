@@ -4,7 +4,7 @@ function states = sampleTrajectories_2(Q)
 global problem;
 global b;
 b = problem.belief;
-sum(b)
+sum(b);
 % Select a start state
 startState = min(find(cumsum(problem.start)>rand));
 
@@ -13,18 +13,18 @@ states = [state];
 actions = [];
 for x = 1:80
     % Select next action
-    [foo,nextAction] = max(b*Q);
+    [foo,maxState] = max(b);
+    nextAction = getActionForState(Q,maxState);
     
     nextState = sampleSuccessorState(state, nextAction);
     states = [states, nextState];
     actions = [actions, nextAction];
     
     state = nextState;
-    observation = randi([1,problem.nrObservations-1]);
-    %observation = 1;
-    nextb = beliefUpdate(b,nextAction,observation);
+    nextb = beliefUpdate(b,nextAction);
+
     b = nextb/sum(abs(nextb));
-    sum(abs(b))
+    som = sum(abs(b))
 end
 figure(1);
 plotSequence(states);
