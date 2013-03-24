@@ -1,0 +1,16 @@
+Installation instructions for approximate POMDP solving software
+
+This software has been developed with Matlab 6.5 (R13) under Linux, I
+haven't tried any other releases or platforms.
+
+The algorithm needs to find the generic/ directory, so add it to your
+Matlab path:
+  addpath CWD/generic
+where CWD is the current directory. You can put this in
+~/matlab/startup.m for convenience.
+
+The software saves results in the directory returned by getDataDir.m,
+you might want to customize this function if you're not satisfied with
+the default (which is the current directory, '.').
+
+$Id: INSTALL,v 1.2 2004/09/20 14:46:22 mtjspaan Exp $

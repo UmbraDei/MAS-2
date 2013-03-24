@@ -1,0 +1,156 @@
+README for approximate POMDP solving software.
+
+This collection of Matlab functions implements the Perseus randomized
+point-based approximate value iteration algorithm for Partially
+Observable Markov Decision Processes (POMDPs) described in [1,2]. The
+software takes as input a POMDP problem specification in Tony's POMDP
+file format [3] and computes an approximate solution to it. This
+package contains two existing problems to illustrate its
+usage. More information can be found on
+ http://www.science.uva.nl/~mtjspaan/pomdp .
+
+I welcome all comments and questions regarding this package.
+
+Matthijs Spaan <mtjspaan@science.uva.nl>
+
+Copyright (c) 2003,2004 Universiteit van Amsterdam. All rights reserved.
+More information is in the file named COPYING.
+
+Table of contents of this README
+1. package contents
+2. usage instructions
+3. example session
+4. running your own POMDP problem
+5. references
+
+========================================================================
+1. PACKAGE CONTENTS
+
+generic/            main algorithm, all problem independent code
+problems/tag/       example problem from Pineau et al., IJCAI 2003
+problems/hallway2/  example problem from Littman et al., ICML 1995
+
+========================================================================
+2. USAGE INSTRUCTIONS
+
+To get started please first follow the instructions in INSTALL on how
+to setup your Matlab path correctly.  All functions need to be called
+from the problem directory (e.g., problems/tag) and will find the
+problem independent code in the generic/ directory. There are three
+"entry" functions defined for users:
+
+1. S=sampleBeliefs(n): the algorithm operates on a fixed set of belief
+                       points, this function allows you to gather a
+                       set of size n.
+
+2. runvi(S): the main algorithm, it computes successive value
+             functions based on set S. It halts after a problem
+             specific maximum time (or when a convergence threshold
+             has been reached). It results are stored in a global
+             struct called backupStats (this way they are not lost
+             when you ctrl-c the algorithm).
+
+3. R=sampleRewards(V): to test the control quality of a value function
+                       trajectories need to be sampled. The fourth
+                       column contains the summed discounted reward of
+                       each trajectory ("help sampleRewards" for more 
+                       details).
+
+Most functions have their input and output arguments documented. For
+more detailed info, as always, use the source.
+
+========================================================================
+3. EXAMPLE SESSION
+
+Start Matlab.
+
+>> cd problems/tag
+>> initProblem;
+initPOMDP: parsing tagAvoid.POMDP.  (takes about 10 minutes the first 
+                                     time, mere seconds on consecutive
+                                     calls by caching the Matlab
+                                     representation)
+>> S=sampleBeliefs(10000);
+initPOMDP: loading tagAvoid.POMDP.mat.
+1000 1.070000
+episode ended at 1170
+episode ended at 1815
+2000 2.140000
+3000 3.210000
+4000 4.250000
+episode ended at 4582
+episode ended at 4713
+5000 5.330000
+6000 6.360000
+episode ended at 6207
+episode ended at 6222
+7000 7.400000
+episode ended at 7476
+8000 8.440000
+9000 9.480000
+episode ended at 9571
+10000 10.610000
+Density is 0.030157
+>> runvi(S);
+
+*snip* (runs for 1500 seconds)
+
+>> global backupStats
+>> backupStats
+backupStats =
+    randomSeed: 42                 % random seed used
+     startTime: 340.1200           % cputime at start of run
+           nrB: 10000              % number of beliefs in S
+        params: [1x1 struct]       % problem parameters used
+             V: {1x393 cell}       % value function at each step
+          SumV: {1x393 cell}       % $\sum_{b \in S}V(b)$
+          Time: {1x393 cell}       % cputime after each step
+>> R=sampleRewards(backupStats.V{1});
+initPOMDP: loading tagAvoid.POMDP.mat.
+>> mean(R(:,4))
+ans =
+  -19.8816
+>> R=sampleRewards(backupStats.V{393});
+initPOMDP: loading tagAvoid.POMDP.mat.
+>> mean(R(:,4))
+ans =
+   -5.8353
+
+========================================================================
+4. RUNNING YOUR OWN POMDP PROBLEM
+
+The software uses a kind of function overloading by exploiting
+Matlab's behavior of first looking for a M-file in the current
+directory before looking in the path. For example, in
+problems/hallway2 exists a episodeEnded.m file to override the one in
+generic/, but for the tag problem the default is appropriate.
+
+1. Copy initProblem.m from problems/tag/ to the directory in which your
+   .POMDP file resides.
+2. Customize it for your problem (see file for instructions).
+3. Check whether you need to override episodeEnded.m.
+4. Copy getDefaultMaxTime.m and customize it.
+5. Run initProblem, the first time the .POMDP file will be parsed,
+   consecutive calls will load the cached .mat file (much faster).
+6. Sample a belief set and run the algorithm.
+
+The algorithm operates on a global struct called "problem" which is
+documented in readPOMDP.m (run 'help readPOMDP').
+
+========================================================================
+5. REFERENCES
+
+[1] Matthijs T. J. Spaan and Nikos Vlassis. A point-based POMDP algorithm
+    for robot planning. In Proceedings of the IEEE International
+    Conference on Robotics and Automation, pages 2399-2404, 2004.
+
+[2] Nikos Vlassis and Matthijs T. J. Spaan. A fast point-based
+    algorithm for POMDPs. In Benelearn 2004: Proceedings of the Annual
+    Machine Learning Conference of Belgium and the Netherlands, pages
+    170-176, Brussels, Belgium, January 2004. (Also presented at the
+    NIPS 16 workshop `Planning for the Real-World', Whistler, Canada,
+    Dec 2003).
+
+[3] Tony's POMDP Page. http://www.cs.brown.edu/research/ai/pomdp/
+
+$Id: README,v 1.3 2004/09/23 12:29:24 mtjspaan Exp $
