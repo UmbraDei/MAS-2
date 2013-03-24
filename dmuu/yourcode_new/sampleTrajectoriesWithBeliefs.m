@@ -30,7 +30,7 @@ function sampleTrajectoriesWithBeliefs(Q)
         nextState = sampleSuccessorState(state, action);
         
         %% Volgende belief
-        [~, observation] = max(getObservationMatrix(action, nextState));
+        [~, observation] = find(cumsum(getObservationMatrix(action, nextState))>rand,1);
         %observation = randi([1, problem.nrObservations]);
         %observation = 1;
                 
