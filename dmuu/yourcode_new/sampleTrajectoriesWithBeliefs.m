@@ -30,7 +30,8 @@ function sampleTrajectoriesWithBeliefs(Q)
         nextState = sampleSuccessorState(state, action);
         
         %% Volgende belief
-        observation = randi([1, problem.nrObservations]);
+        [~, observation] = max(getObservationMatrix(action, nextState));
+        %observation = randi([1, problem.nrObservations]);
         %observation = 1;
                 
         beliefNext = beliefUpdate(belief, action, observation);
@@ -78,7 +79,15 @@ function s = sampleSuccessorState(state, action)
     else
         s = min(find(cumsum(problem.transitionS{action}(:,state))>rand));
     end
+    
+function observationMatrix = getObservationMatrix(a, s)
 
+    global problem;
+    if problem.useSparse == 0
+        observationMatrix = problem.observation(s,a, :);
+    else
+        observationMatrix = problem.observationS{a}(s,:);
+    end
 
 
 
