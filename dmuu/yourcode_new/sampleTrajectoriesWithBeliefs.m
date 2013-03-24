@@ -6,7 +6,8 @@ function sampleTrajectoriesWithBeliefs(Q)
 
     %% Toekennen van startpositie
     belief = problem.belief;
-    [~, state] = max(belief);
+%    [~, state] = max(belief);
+     state = find(cumsum(problem.start)>rand, 1 );
 
     %% 
     states = [state];
@@ -29,8 +30,8 @@ function sampleTrajectoriesWithBeliefs(Q)
         nextState = sampleSuccessorState(state, action);
         
         %% Volgende belief
-        %observation = randi([1, problem.nrObservations]);
-        observation = 1;
+        observation = randi([1, problem.nrObservations]);
+        %observation = 1;
                 
         beliefNext = beliefUpdate(belief, action, observation);
         while round(sum(beliefNext)) ~=1
@@ -38,7 +39,7 @@ function sampleTrajectoriesWithBeliefs(Q)
             beliefNext = beliefUpdate(belief, action, observation); 
         end
         
-        [sum(beliefNext), state, action, observation]
+        [sum(beliefNext), state, action, observation];
         %%Updaten van de state
         state = nextState;
         belief = beliefNext;
