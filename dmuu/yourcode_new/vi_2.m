@@ -1,4 +1,4 @@
-function Q = vi
+function Q = vi_2
 
 clear global problem;
 initProblem;
@@ -11,17 +11,25 @@ Q=zeros(problem.nrStates,problem.nrActions);
 
 delta = convergenceThreshold+1;
 
+
+for action=1:problem.nrActions
+    if problem.useSparse == 0
+       transitionMatrix = problem.transition(:, :, action);
+    else
+       transitionMatrix = problem.transitionS{action};
+    end
+    [nextStates, states, values] = find(transitionMatrix);
+    transitions{action} = [nextStates, states, values];
+end
+        
 while delta > convergenceThreshold
     QNew=zeros(problem.nrStates,problem.nrActions);
     delta = 0;
     for action=1:problem.nrActions
-        if problem.useSparse == 0
-           transitionMatrix = problem.transition(:, :, action);
-        else
-           transitionMatrix = problem.transitionS{action};
-        end
-        [nextStates, states, values] = find(transitionMatrix);
-        
+
+        nextStates = transitions{action}(:,1);
+        states = transitions{action}(:,2);
+        values = transitions{action}(:,3);
         %%nieuwe code
         for i = 1: length(nextStates)
             state = states(i);
@@ -46,30 +54,7 @@ while delta > convergenceThreshold
         %end
        
         delta = max(delta, max(abs(Q(:, action)-QNew(:, action))));
-        %% uitgecomment
-        if 0
-            for state=1:problem.nrStates
-
-
-               v = Q(state, action);
-
-               tempSum = 0;
-               for nextState = 1: problem.nrStates
-                   if problem.useSparse == 0
-                       tempSum = tempSum  + ...
-                            problem.transition(nextState, state, action)* max(Q(nextState,:));
-                   else
-                       tempSum = tempSum  + ...
-                            problem.transitionS{action}(nextState, state)* max(Q(nextState,:));
-                   end
-               end
-
-               QNew(state, action) = problem.reward(state,action) + problem.gamma*tempSum;
-
-               delta = max(delta, abs(v-QNew(state, action)));
-            end
-        end
-       %action
+       
     end
     %'Nieuwe Q'
     Q = QNew;
