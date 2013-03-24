@@ -1,4 +1,4 @@
-function Q = viMultiAgent
+function Q = viMultiAgent2
 
 clear global problem;
 initProblem;
@@ -11,13 +11,16 @@ Q=zeros(problem.nrStates,problem.nrActions);
 
 delta = convergenceThreshold+1;
 
+for action=1:problem.nrActions
+    transitionMatrix{action} = sparse(problem.transition(:,:,action));
+end
+     
 while delta > convergenceThreshold
     QNew=zeros(problem.nrStates,problem.nrActions);
     delta = 0;
     for action=1:problem.nrActions
-        transitionMatrix = problem.transition(:, :, action);
-        
-        [nextStates, states, values] = find(transitionMatrix);
+       
+        [nextStates, states, values] = find(transitionMatrix{action});
         
         %%nieuwe code
         for i = 1: length(nextStates)
