@@ -3,8 +3,8 @@ function a = getActionForState(Q,s)
 
 global problem;
 
-if size(Q)~=[problem.nrStates problem.nrActions]
-  error('Q table does not have the correct dimensions');
-end
+%if size(Q)~=[problem.nrStates problem.nrActions]
+%  error('Q table does not have the correct dimensions');
+%end
 
 [foo,a]=max(Q(s,:));
