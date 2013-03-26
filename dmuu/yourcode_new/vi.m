@@ -4,8 +4,11 @@ clear global problem;
 initProblem;
 global problem;
 
-terminalStates=getTerminalStates;
+%terminalStates=getTerminalStates;
 convergenceThreshold=1e-6;
+if exist('problem.useSparse') == 0 
+   problem.useSparse = 0; 
+end
 
 Q=zeros(problem.nrStates,problem.nrActions);
 

@@ -4,13 +4,15 @@ clear global problem;
 initProblem;
 global problem;
 
-terminalStates=getTerminalStates;
 convergenceThreshold=1e-6;
 
 Q=zeros(problem.nrStates,problem.nrActions);
 
 delta = convergenceThreshold+1;
 
+if exist('problem.useSparse') == 0 
+   problem.useSparse = 0; 
+end
 
 for action=1:problem.nrActions
     if problem.useSparse == 0
