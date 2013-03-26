@@ -19,9 +19,9 @@ plot(T,'b');
 hold on;
 plot(T2,'r');
 
-% Export images to the correct folder.
 path = pwd;
 [~, folderName, ~] = fileparts(path);
+
 filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi.eps');
 print('-depsc2',filename);
 filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi.png');
