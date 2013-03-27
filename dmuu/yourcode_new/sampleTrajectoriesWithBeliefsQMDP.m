@@ -1,4 +1,4 @@
-function [states,actions] = sampleTrajectoriesWithBeliefs(Q)
+function [states,actions, beliefs] = sampleTrajectoriesWithBeliefsQMDP(Q)
 % sample a number of trajectories through the MDP, following the
 % policy specified by Q.
     global problem;
@@ -12,7 +12,7 @@ function [states,actions] = sampleTrajectoriesWithBeliefs(Q)
     %% 
     states = [state];
     actions = [];
-
+    beliefs = [belief];
     %%
     for i = 1:nbOfIterations
         %% Volgende actie
@@ -48,6 +48,7 @@ function [states,actions] = sampleTrajectoriesWithBeliefs(Q)
         %%
         states = [states, state];
         actions = [actions, action];
+        beliefs = [beliefs; belief];
         
         %% Het tekenen
         %waitforbuttonpress;
