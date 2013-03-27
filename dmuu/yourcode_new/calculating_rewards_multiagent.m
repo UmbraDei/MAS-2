@@ -8,7 +8,7 @@ rewardBeliefs = zeros(1,nbIteration);
 for iteration = 1:nbIteration
     [statesBasic, actionsBasic] = sampleTrajectoriesMultiAgents(Q);
     [statesBeliefs, actionsBeliefs] = sampleTrajectoriesMultiAgentsSingle(QSingle);
-    for state=1:length(actions)
+    for state=1:length(actionsBasic)
         indRewards = problem.reward(statesBasic(state), actionsBasic(state));
         rewardBasic(1,iteration) = rewardBasic(1,iteration) +  indRewards * problem.gamma^(state-1);
         

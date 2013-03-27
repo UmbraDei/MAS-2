@@ -18,7 +18,7 @@ calculating_rewards;
 %'loadunload'
 %calculating_rewards;
 
-if 1
+if 0
 %%
 cd('../isr');
 'isr'
