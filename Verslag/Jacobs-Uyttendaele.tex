@@ -11,12 +11,66 @@
 \author{Tom Jacobs (s0214835), Thomas Uyttendaele (s0215028)}
 \begin{document}
 \maketitle
-\part{}
-\section{Value iteration in MDPs}
-The different implementations of Value Iteration have been verified using the $Q^{*}$ provided for the \emph{loadunload} problem. They match exactly within the accuracy of the reference matrix.
-\paragraph{Performance statistics}\hfill
 
-\begin{table}[!h]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%					Part I					%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%				Value Iteration				%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Value iteration in MDPs}
+
+The different implementations of Value Iteration have been verified using the $Q^{*}$ provided for the \emph{loadunload} problem. They match exactly within the accuracy of the reference matrix.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%					Rewards					%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Rewards}
+
+The average sums of discounted rewards and relevant standard deviations (between parenthesis) have been visualised in \ref{table:rewards}. 
+They are the result of 100 runs with a horizon of 100 steps.
+The results for \emph{MLS} and \emph{$Q_{MDP}$} will be further discussed in the next section.
+
+A brief comparison between the results for the \emph{Initial Start Distribution} and the \emph{Fully Observable} implementations shows that the latter produces slightly smaller reward values. 
+The main reason is that a horizon chosen at 100 steps still somewhat limits the maximal achievable reward.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%				Performance					%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Performance statistics}
+
+The algorithm for \emph{Value Iteration} presented in the slides was implemented with a few minor modifications for performance reasons. 
+Looping is first done over actions and then nested the different states. To exploit the sparsity of some of the matrices the Matlab \emph{find()} function is used.
+
+To optimize the calculation of the $Q^{*}$ matrices a second implementation was done where the fetching of the non-zero elements from sparse matrices is done up front. 
+The average running time and standard deviation of running times in seconds for \emph{Value Iteration} can be found in table \ref{table:vi}.
+Here the new algorithm is the modified version with fetching before the actual loops.
+\begin{framed}
+\textit{note: for all timing results presented in this report the first value is removed before processing, as it is usually an outlier due to initialization and caching delays.}
+\end{framed}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%					Tables					%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}
 \centering
 \begin{tabular}{ c || c | c || c | c}
 Problem & Mean Old & Mean New & Std Dev Old & Std Dev New \\
@@ -30,15 +84,27 @@ trc & 1.408e+01 & 1.418e+01 & 1.850e-01 & 2.250e-01\\
 \label{table:vi}
 \end{table}
 
-The algorithm for \emph{Value Iteration} presented in the slides was implemented with a few minor modifications for performance reasons. 
-Looping is first done over actions and then nested the different states. To exploit the sparsity of some of the matrices the Matlab \emph{find()} function is used.
+\begin{table}
+\centering
+\begin{tabular}{ c || c | c | c | c }
+\hfill & Initial Start & Fully & MLS & $Q_{MDP}$\\
+\hfill & Distribution &  Observable &  & \\
+\hline
+hallway & 1.536 & 1.521 (0.5654) & 0.8552 (0.3829) & 0.3066 (0.3750) \\
+hallway2 & 1.201 & 1.179 (0.4823) & 0.1896 (0.1688) & 0.09883 (0.2166)\\
+trc & 10.89 & 10.54 (2.808) & 4.634 (2.524) & 0 (0)
+\\
+\end{tabular}
+\caption{Reward values for the different algorithms}
+\label{table:rewards}
+\end{table}
 
-To optimize the calculation of the $Q^{*}$ matrices a second implementation was done where the fetching of the non-zero elements from sparse matrices is done up front. 
-The average running time and standard deviation of running times in seconds for \emph{Value Iteration} can be found in table \ref{table:vi}.
-Here the new algorithm is the modified version with fetching before the actual loops.
-\begin{framed}
-\textit{note: for all timing results presented in this report the first value is removed before processing, as it is usually an outlier due to initialization and caching delays.}
-\end{framed}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%					Figures					%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{SCfigure}
 \vspace{-20pt}
 \hspace{-30pt}
@@ -83,27 +149,43 @@ Here the new algorithm is the modified version with fetching before the actual l
 \vspace{-20pt}
 \end{SCfigure}
 
-The average sums of discounted rewards and relevant standard deviations (between parenthesis) have been visualised in \ref{table:rewards}. They are the result of 100 runs with a horizon of 100 steps.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%					Paths					%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{table}
-\centering
-\begin{tabular}{ c || c | c | c }
-\hfill & Fully Observable & MLS & $Q_{MDP}$\\
-\hline
-hallway & 7.463e-01 & 7.167e-01 & 1.0582e-02\\
-hallway2 & 1.167e+00 & 1.115e+00 & 1.024e-02\\
-trc & 1.408e+01 & 1.418e+01 & 1.850e-01\\
-\end{tabular}
-\caption{Value Iteration runtime statistics for both algorithms}
-\label{table:rewards}
-\end{table}
- 
-%%Rewards : horizon 100, 100 iterations.
+\subsubsection*{Paths followed}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%				Heuristic					%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Partially observable environments: heuristic methods}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%				Point-based					%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Partially observable environments: point-based methods}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%					Part II					%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \part{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+%				Multi-agent					%
+%											%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Multiagent planning under uncertainty}
 \end{document}
