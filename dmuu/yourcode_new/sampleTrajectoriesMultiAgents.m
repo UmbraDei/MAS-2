@@ -1,4 +1,4 @@
-function sampleTrajectoriesMultiAgents(Q)
+function [states,actions] = sampleTrajectoriesMultiAgents(Q)
 % sample a number of trajectories through the MDP, following the
 % policy specified by Q.
     global problem;

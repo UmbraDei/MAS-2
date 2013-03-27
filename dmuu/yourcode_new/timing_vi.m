@@ -13,6 +13,8 @@ for i = 1:nbOfRuns+1
    tic;
    Q=vi_2; 
    T2(i) = toc; 
+   
+   i
 end
 
 %% Filter out the first (outlying) values.
@@ -50,4 +52,8 @@ standardDeviation_T2 = std(T2)
 
 outputMatrix = [mean_T, standardDeviation_T; mean_T2, standardDeviation_T2];
 filename = strcat('../../../Verslag/Timings/',folderName,'/statistics.txt');
+save(filename, 'outputMatrix', '-ascii');
+
+outputMatrix = [T;T2];
+filename = strcat('../../../Verslag/Timings/',folderName,'/data-timing.txt');
 save(filename, 'outputMatrix', '-ascii');

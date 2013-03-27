@@ -1,4 +1,4 @@
-function sampleTrajectoriesWithBeliefs(Q)
+function [states,actions] = sampleTrajectoriesWithBeliefs(Q)
 % sample a number of trajectories through the MDP, following the
 % policy specified by Q.
     global problem;

@@ -4,7 +4,7 @@ clear global problem;
 initProblem;
 global problem;
 convergenceThreshold=1e-6;
-if exist('problem.useSparse') == 0 
+if isfield(problem, 'useSparse') == 0 
    problem.useSparse = 0; 
 end
 

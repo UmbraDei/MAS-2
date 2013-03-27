@@ -48,7 +48,7 @@ while delta > convergenceThreshold
     end
     %'Nieuwe Q'
     Q = QNew;
-    delta
+    delta;
 end
 
 

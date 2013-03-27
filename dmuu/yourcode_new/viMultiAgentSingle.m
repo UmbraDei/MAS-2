@@ -51,7 +51,7 @@ for agent = 1:length(problem.transitionInd)
         end
         %'Nieuwe Q'
         QAgent = QNew;
-        delta
+        delta;
     end
     
     Q{agent} = QAgent;

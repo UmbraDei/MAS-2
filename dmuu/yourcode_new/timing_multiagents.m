@@ -31,6 +31,12 @@ semilogy(T3,'g');
 hold on;
 semilogy(T2,'r');
 
+figure(3);
+hold off;
+plot(T3,'g');
+hold on;
+plot(T2,'r');
+
 % Get the current folder
 path = pwd;
 [~, folderName, ~] = fileparts(path);
@@ -53,6 +59,15 @@ ylim(limits);
 
 title(horzcat('Runtime for value iteration on multiagent problem ', folderName));
 
+
+figure(3);
+legend('Algorithm viMultiAgent2', 'Algorithm viMultiAgentSingle');
+xlabel('Run');
+ylabel('Time(s)');
+ylim(limits);
+
+title(horzcat('Runtime for value iteration on multiagent problem ', folderName));
+
 % Export images to the correct folder.
 figure(1);
 filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi.eps');
@@ -62,13 +77,18 @@ print('-dpng',filename);
 hold off;
 
 figure(2);
-filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi.eps');
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-2.eps');
 print('-depsc2',filename);
-filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi.png');
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-2.png');
 print('-dpng',filename);
 hold off;
 
-
+figure(3);
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-3.eps');
+print('-depsc2',filename);
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-3.png');
+print('-dpng',filename);
+hold off;
 
 %% Calculate some characteristics
 mean_T = mean(T)
@@ -80,4 +100,8 @@ standardDeviation_T3 = std(T3)
 
 outputMatrix = [mean_T, standardDeviation_T; mean_T2, standardDeviation_T2; mean_T3, standardDeviation_T3];
 filename = strcat('../../../Verslag/Timings/',folderName,'/statistics.txt');
+save(filename, 'outputMatrix', '-ascii');
+
+outputMatrix = [T;T2;T3];
+filename = strcat('../../../Verslag/Timings/',folderName,'/data-timing.txt');
 save(filename, 'outputMatrix', '-ascii');

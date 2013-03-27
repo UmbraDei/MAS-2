@@ -1,4 +1,4 @@
-function sampleTrajectories(Q)
+function [states,actions] = sampleTrajectories(Q)
 % sample a number of trajectories through the MDP, following the
 % policy specified by Q.
     global problem;
@@ -9,7 +9,7 @@ function sampleTrajectories(Q)
 
     %% Het tekenen
     plotState(state);
-    waitforbuttonpress;
+    %waitforbuttonpress;
 
     %% 
     states = [state];
@@ -24,8 +24,8 @@ function sampleTrajectories(Q)
         nextState = sampleSuccessorState(state, action);
 
         %% Het tekenen
-        waitforbuttonpress;
-        plotState(nextState);
+        %waitforbuttonpress;
+        %plotState(nextState);
 
         %%Updaten van de state
         state = nextState;
