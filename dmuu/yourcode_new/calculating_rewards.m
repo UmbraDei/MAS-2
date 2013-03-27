@@ -50,5 +50,5 @@ for state = 1: problem.nrStates
     reward = reward + problem.belief(1,state)*max(Q(state, :));
 end
 filename = strcat('../../../Verslag/Timings/',folderName,'/rewards-with-intial-Q.txt');
-save(filename, 'outputMatrix', '-ascii');
+save(filename, 'reward', '-ascii');
 
