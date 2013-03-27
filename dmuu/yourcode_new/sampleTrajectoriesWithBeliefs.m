@@ -2,7 +2,7 @@ function [states,actions] = sampleTrajectoriesWithBeliefs(Q)
 % sample a number of trajectories through the MDP, following the
 % policy specified by Q.
     global problem;
-    nbOfIterations = 50;
+    nbOfIterations = 100;
 
     %% Toekennen van startpositie
     belief = problem.belief;
@@ -50,14 +50,14 @@ function [states,actions] = sampleTrajectoriesWithBeliefs(Q)
         actions = [actions, action];
         
         %% Het tekenen
-        waitforbuttonpress;
-        figure(1);
-        plotState(state);
-        figure(2);
-        plot(belief);
-        hold on;
-        plot(state, 0, 'r*');
-        hold off;
+        %waitforbuttonpress;
+        %figure(1);
+        %plotState(state);
+        %figure(2);
+        %plot(belief);
+        %hold on;
+        %plot(state, 0, 'r*');
+        %hold off;
     end
 
     

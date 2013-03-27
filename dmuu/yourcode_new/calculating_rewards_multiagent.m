@@ -1,13 +1,13 @@
-Q = vi_2;
-
+Q = viMultiAgent2;
+QSingle = viMultiAgentSingle;
 
 global problem;
 nbIteration = 100;
 rewardBasic = zeros(1,nbIteration);
 rewardBeliefs = zeros(1,nbIteration);
 for iteration = 1:nbIteration
-    [statesBasic, actionsBasic] = sampleTrajectories(Q);
-    [statesBeliefs, actionsBeliefs] = sampleTrajectoriesWithBeliefs(Q);
+    [statesBasic, actionsBasic] = sampleTrajectoriesMultiAgents(Q);
+    [statesBeliefs, actionsBeliefs] = sampleTrajectoriesMultiAgentsSingle(QSingle);
     for state=1:length(actions)
         indRewards = problem.reward(statesBasic(state), actionsBasic(state));
         rewardBasic(1,iteration) = rewardBasic(1,iteration) +  indRewards * problem.gamma^(state-1);
@@ -26,14 +26,14 @@ mean_T = mean(rewardBasic)
 standardDeviation_T = std(rewardBasic)
 
 outputMatrix = [mean_T, standardDeviation_T];
-filename = strcat('../../../Verslag/Timings/',folderName,'/rewards-timing-basic-nbOfIterations-', num2str(nbIteration), '.txt');
+filename = strcat('../../../Verslag/Timings/',folderName,'/rewards-timing-toghether-nbOfIterations-', num2str(nbIteration), '.txt');
 save(filename, 'outputMatrix', '-ascii');
 
 mean_T = mean(rewardBeliefs)
 standardDeviation_T = std(rewardBeliefs)
 
 outputMatrix = [mean_T, standardDeviation_T];
-filename = strcat('../../../Verslag/Timings/',folderName,'/rewards-timing-beliefs-nbOfIterations-', num2str(nbIteration), '.txt');
+filename = strcat('../../../Verslag/Timings/',folderName,'/rewards-timing-single-nbOfIterations-', num2str(nbIteration), '.txt');
 save(filename, 'outputMatrix', '-ascii');
 
 

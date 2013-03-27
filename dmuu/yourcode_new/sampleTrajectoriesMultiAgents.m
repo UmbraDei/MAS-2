@@ -2,14 +2,14 @@ function [states,actions] = sampleTrajectoriesMultiAgents(Q)
 % sample a number of trajectories through the MDP, following the
 % policy specified by Q.
     global problem;
-    nbOfIterations = 50;
+    nbOfIterations = 100;
 
     %% Toekennen van startpositie
     state = find(cumsum(problem.start)>rand, 1 );
 
     %% Het tekenen
-    plotState(state);
-    waitforbuttonpress;
+    %plotState(state);
+    %waitforbuttonpress;
 
     %% 
     states = [state];
@@ -24,8 +24,8 @@ function [states,actions] = sampleTrajectoriesMultiAgents(Q)
         nextState = sampleSuccessorState(state, action);
 
         %% Het tekenen
-        waitforbuttonpress;
-        plotState(nextState);
+        %waitforbuttonpress;
+        %plotState(nextState);
 
         %%Updaten van de state
         state = nextState;
