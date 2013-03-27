@@ -3,8 +3,6 @@ function Q = vi
 clear global problem;
 initProblem;
 global problem;
-
-%terminalStates=getTerminalStates;
 convergenceThreshold=1e-6;
 if exist('problem.useSparse') == 0 
    problem.useSparse = 0; 

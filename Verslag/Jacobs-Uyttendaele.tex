@@ -9,7 +9,19 @@
 \maketitle
 \part{}
 \section{Value iteration in MDPs}
-
+The different implementations of Value Iteration have been verified using the $Q^{*}$ provided for the \emph{loadunload} problem. They match exactly within the accuracy of the reference matrix.
+\paragraph{Performance statistics}\hfill
+\begin{table}[!h]
+\centering
+\begin{tabular}{ c | c | c }
+Problem & Mean Runtime & Runtime Standard Deviation \\
+\hline
+loadunload & 0.1 & 8 \\
+hallway & 0.1 & 2 \\
+hallway2 & 0.2 & 3 \\
+trc & 0.3 & 5 \\
+\end{tabular}
+\end{table}
 
 \section{Partially observable environments: heuristic methods}
 
