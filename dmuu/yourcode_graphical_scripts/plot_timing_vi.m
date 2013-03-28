@@ -4,7 +4,7 @@ path = pwd;
 
 
 filename = strcat('../../../Verslag/Timings/',folderName,'/data-timing.txt');
-load(outputMatrix, 'outputMatrix', '-ascii');
+outputMatrix = load(filename, '-ascii');
 T = outputMatrix(1,:);
 T2 = outputMatrix(2,:);
 
