@@ -7,12 +7,14 @@ T2 = zeros(1,nbOfRuns+1);
 %% Do the different timing runs.
 for i = 1:nbOfRuns+1
    tic;
-   Q=vi;
-   T(i)= toc; 
+   Q=vi_2;
+   sampleTrajectoriesWithBeliefsMLS(Q);
+   T2(i)= toc; 
    
    tic;
    Q=vi_2; 
-   T2(i) = toc; 
+   sampleTrajectoriesWithBeliefsQMDP(Q);
+   T(i) = toc; 
    
    i
 end
@@ -31,15 +33,15 @@ path = pwd;
 [~, folderName, ~] = fileparts(path);
 
 % Make up the graph
-legend('Algorithm vi', 'Algorithm vi_2');
+legend('Algorithm vi_2 and Q_MDP', 'Algorithm vi_2 and MLS');
 xlabel('Run');
 ylabel('Time(s)');
 title(horzcat('Runtime for value iteration on problem ', folderName));
 
 % Export images to the correct folder.
-filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi.eps');
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_qmdp.eps');
 print('-depsc2',filename);
-filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi.png');
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_mls.png');
 print('-dpng',filename);
 
 hold off;
@@ -51,9 +53,9 @@ mean_T2 = mean(T2)
 standardDeviation_T2 = std(T2)
 
 outputMatrix = [mean_T, standardDeviation_T; mean_T2, standardDeviation_T2];
-filename = strcat('../../../Verslag/Timings/',folderName,'/statistics.txt');
+filename = strcat('../../../Verslag/Timings/',folderName,'/statistics-qmdp-mls.txt');
 save(filename, 'outputMatrix', '-ascii');
 
 outputMatrix = [T;T2];
-filename = strcat('../../../Verslag/Timings/',folderName,'/data-timing.txt');
+filename = strcat('../../../Verslag/Timings/',folderName,'/data-qmdp-mls-timing.txt');
 save(filename, 'outputMatrix', '-ascii');

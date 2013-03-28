@@ -18,7 +18,7 @@ end
 params.randomSeed=42;
 
 % algorithm variations:
-params.epsilon=0;%1e-3;
+params.epsilon=1e-6;%1e-3;
 params.maxTime=getDefaultMaxTime;
 
 if ~isempty(userParams)
