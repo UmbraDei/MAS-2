@@ -8,7 +8,7 @@
 \usepackage{sidecap}
 \usepackage{framed}
 \usepackage{subcaption}
-\usepackage[textwidth=13cm]{geometry}
+\usepackage[textwidth=13cm, textheight=22cm]{geometry}
 \usepackage{todonotes}
 
 \title{Report Multi-agent Systems Module II}
@@ -34,12 +34,6 @@
 
 The different implementations of Value Iteration have been verified using the $Q^{*}$ provided for the \emph{loadunload} problem. They match exactly within the accuracy of the reference matrix.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%											%
-%					Rewards					%
-%											%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \subsubsection*{Rewards}
 
 The average sums of discounted rewards and relevant standard deviations (between parenthesis) have been visualised in \ref{table:rewards}. 
@@ -48,12 +42,6 @@ The results for \emph{MLS} and \emph{$Q_{MDP}$} will be further discussed in the
 
 A brief comparison between the results for the \emph{Initial Start Distribution} and the \emph{Fully Observable} implementations shows that the latter produces slightly smaller reward values. 
 The main reason is that a horizon chosen at 100 steps still somewhat limits the maximal achievable reward.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%											%
-%				Performance					%
-%											%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection*{Performance statistics}
 
@@ -167,7 +155,7 @@ If a state is visited multiple times the last visit is drawn.
 
 The figures marked (b) show which states are visited throughout the run itself.
 
-\newgeometry{textwidth=16cm}
+\newgeometry{textwidth=16cm, textheight=25cm}
 \begin{figure}
         \centering
         \begin{subfigure}{0.48\textwidth}
@@ -191,7 +179,7 @@ The figures marked (b) show which states are visited throughout the run itself.
         \centering
         \begin{subfigure}{0.48\textwidth}
         		\includegraphics[width=\textwidth]{Paths/trc/plot-basic-part1-6129604379.png}
-                \caption{Last time in state, higher means more recent}
+                \caption{Last time in state, darker means more recent}
                 \label{fig:path_trc_part1}
                 \hspace{10pt}
         \end{subfigure}
@@ -204,6 +192,82 @@ The figures marked (b) show which states are visited throughout the run itself.
         \end{subfigure}
         \caption{A path through the trc problem}
         \label{fig:path_trc}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{Paths/trc/plot-QMDP-part1-7002556633.png}
+                \caption{Last time in state, darker means more recent}
+                \label{fig:path_trc_part1}
+                \hspace{10pt}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{Paths/trc/plot-QMDP-part2-7002556633.png}
+                \caption{Run through the states}
+                \label{fig:path_trc_part2}
+                \hspace{-10pt}
+        \end{subfigure}
+        \caption{The trc problem during a $Q_{MDP}$ run}
+        \label{fig:trc_qmdp}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{Paths/trc/plot-MLS-bel-1-8790226525.png}
+                \caption{Beliefs in the starting state}
+                \label{fig:bel_MLS_trc_part1}
+                \hspace{10pt}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{Paths/trc/plot-MLS-bel-2-8790226525.png}
+                \caption{Beliefs in the 20th state}
+                \label{fig:bel_MLS_trc_part2}
+                \hspace{-10pt}
+        \end{subfigure}
+        \caption{The beliefs in the trc problem during an MLS run}
+        \label{fig:bel_trc_MLS}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{Paths/trc/plot-QMDP-bel-1-8790226525.png}
+                \caption{Beliefs in the starting state}
+                \label{fig:bel_qmdp_trc_part1}
+                \hspace{10pt}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{Paths/trc/plot-QMDP-bel-2-8790226525.png}
+                \caption{Beliefs in the 20th state}
+                \label{fig:bel_qmdp_trc_part2}
+                \hspace{-10pt}
+        \end{subfigure}
+        \caption{The beliefs in the trc problem during a $Q_{MDP}$ run}
+        \label{fig:bel_trc_QMDP}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{Paths/hallway/plot-QMDP-bel-1-8045708648.png}
+                \caption{Beliefs in the starting state}
+                \label{fig:bel_qmdp_hallway_part1}
+                \hspace{10pt}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{Paths/hallway/plot-QMDP-bel-2-8045708648.png}
+                \caption{Beliefs in the 20th state}
+                \label{fig:bel_qmdp_hallway_part2}
+                \hspace{-10pt}
+        \end{subfigure}
+        \caption{The beliefs in the hallway problem during a successful $Q_{MDP}$ run}
+        \label{fig:bel_hallway_QMDP}
 \end{figure}
 
 \restoregeometry
@@ -220,9 +284,11 @@ In table \ref{table:rewards} a comparison between the different algorithms can b
 While the fully observable case produces high reward values with a relatively small standard deviation, the MLS and $Q_{MDP}$ implementations output lower and much more varied results.
 
 The $Q_{MDP}$ implementation often stalls during execution when a state is reached where staying in the current state is the best available action.
-An extreme example here is the result achieved (or clear lack thereof) with the trc problem, where not a single run produced a reward. \todo{figuur}
+An extreme example here is the result achieved (or clear lack thereof) with the trc problem, where not a single run produced a reward. The evolution of the states in one such run is seen on figure \ref{fig:trc_qmdp} (a) and (b).
 
-An explanation for this behaviour is the fact that operation in a partially observable environment lacks total information and thus can't always calculate the best possible course of actions.
+An explanation for the MLS and $Q_{MDP}$ behaviour as compared to the fully observable case is the fact that operation in a partially observable environment lacks total information and thus can't always calculate the best possible course of actions.\\
+\\
+A short visualization of the evolution of beliefs in both the MLS and $Q_{MDP}$ implementation for the trc problem can be seen in figures \ref{fig:bel_trc_MLS} and \ref{fig:bel_trc_QMDP}. The $Q_{MDP}$ case clearly shows to equal sets of peaks, which causes the stalling mentioned earlier. A similar visualization for the hallway problem using the $Q_{MDP}$ implementation and a run that did actually finish can be seen in figure \ref{fig:bel_hallway_QMDP}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %											%
@@ -231,6 +297,8 @@ An explanation for this behaviour is the fact that operation in a partially obse
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Partially observable environments: point-based methods}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %											%
@@ -271,7 +339,9 @@ An explanation for this behaviour is the fact that operation in a partially obse
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Time Spent}
-
+Most of the time spent on this project was done cooperatively and thus the effort is distributed quite evenly.
+Based on combined agenda's we estimate both having spent between 28 and 35 hours on this project. 
+This does not include the many hours it took to generate some images and statistics over several runs in the more expansive problems.
 
 
 \end{document}
