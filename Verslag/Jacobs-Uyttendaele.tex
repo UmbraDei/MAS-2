@@ -310,15 +310,17 @@ This table demonstrates a clear difference between the relevant algorithms. \tod
 \begin{tabular}{ c || c | c | c | c | c | c | c}
 \hfill & MLS & $Q_{MDP}$ & $Pers_{10}$ & $Pers_{100}$ & $Pers_{1000}$ & $Pers_{10000}$ \\
 \hline
-$\mu_{Reward}$ & 0.1896 & 0.09883 & & & & \\
-$\sigma_{Reward}$ & 0.1688 & 0.2166 & & & & \\
+$\mu_{Reward}$ & 0.1896 & 0.09883 & 0.1548 & 0.2497 &  0.2473 & 0.23379\\
+$\sigma_{Reward}$ & 0.1688 & 0.2166 & 0 & 0.007125 & 0.004098 & 0.006262 \\
 \hline \hline
-$\mu_{Runtime}$ & & & & & & \\
-$\sigma_{Runtime}$ & & & & & &\\
+$\mu_{Runtime}$  & 2.746 & 2.675 & 2.1368 &  55.57 & 61.99 & 69.63 \\
+$\sigma_{Runtime}$  & 0.01467 & 0.014556 & 0.2102 & 0.3610 & 0.9568 & 2.4624 \\
 \end{tabular}
 \caption{Performance of the different algorithms for the hallway2 problem}
 \label{table:performance}
 \end{table}
+
+\todo{Based on 5 iterations for perseus}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %											%
@@ -368,6 +370,32 @@ multi betekenent samen denken, single apart, 3x2 paden uitgetekend in todo folde
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Overview of Algorithms}
+
+\subsubsection*{Value Iteration}
+There scripts can be found in the folder \texttt{yourcode\_new}.
+\begin{itemize}
+	\item \emph{vi.m}: The basic value iteration for single agent problems. It is optimized by using the build-in function \texttt{find} so it only iterates over the non-zero elements of the transition matrix.
+	\item \emph{vi\_2.m}: A small optimization on vi.m by calculating the non-zero before and using these cached values for further calculations. 
+	\item \emph{viMultiAgent.m}: The modification of vi\_2.m towards multiple agents because the non-existing of specific field in the problem structure.
+	\item \emph{viMultiAgent2.m}: A significant modification on viMultiAgent so it transforms the transition matrix into a sparse matrix.
+	\item \emph{viMultiAgentSingle.m}: The modification of vi\_2.m so the value iteration can calculate the different Q matrix for every single robot in a single script. 
+	
+\end{itemize}
+
+\subsubsection*{Sample trajectory}
+There scripts can be found in the folder \texttt{yourcode\_new}.
+\begin{itemize}
+	\item \emph{sampleTrajectories.m}: The basic trajectory sampler for single agents, working with full knowledge of the environment. The robot knows it exact location in every step.
+	\item \emph{sampleTrajectoriesWithBeliefsMLS.m}: The trajectory sampler for single agents, working with a certain belief of his position in the environment. The choice of the action is based on the most likely state, which is named MLS.
+	\item \emph{sampleTrajectoriesWithBeliefsQMDP.m}: The trajectory sampler for single agents, working with a certain belief of his position in the environment. The choice of the action is based on the beliefs, which is named $Q_{MDP}$.
+	\item \emph{sampleTrajectoriesMultiAgents.m}: The trajectory sampler for multiple agents with a combined knowledge of the environment. Also no beliefs are introduced in this problem.
+	\item \emph{sampleTrajectoriesMultiAgentsSingle.m}: The trajectory sampler for multiple agents with no combined knowledge of the environment. Also no beliefs are introduced in this problem.
+\end{itemize}
+
+The reward coming from following a certain path can be afterwards calculated based on the sequence of states and actions. An example can be found in the scripts \texttt{calculating\_rewards.m} and \texttt{calculating\_rewards.m} in the folder \texttt{yourcode\_graphical\_scripts}.
+
+\subsubsection*{Graphical scripts}
+All the scripts used for generating the images and data in this report can be found in the folder \texttt{yourcode\_graphical\_scripts}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %											%
