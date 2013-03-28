@@ -288,7 +288,9 @@ An extreme example here is the result achieved (or clear lack thereof) with the 
 
 An explanation for the MLS and $Q_{MDP}$ behaviour as compared to the fully observable case is the fact that operation in a partially observable environment lacks total information and thus can't always calculate the best possible course of actions.\\
 \\
-A short visualization of the evolution of beliefs in both the MLS and $Q_{MDP}$ implementation for the trc problem can be seen in figures \ref{fig:bel_trc_MLS} and \ref{fig:bel_trc_QMDP}. The $Q_{MDP}$ case clearly shows to equal sets of peaks, which causes the stalling mentioned earlier. A similar visualization for the hallway problem using the $Q_{MDP}$ implementation and a run that did actually finish can be seen in figure \ref{fig:bel_hallway_QMDP}
+A short visualization of the evolution of beliefs in both the MLS and $Q_{MDP}$ implementation for the trc problem can be seen in figures \ref{fig:bel_trc_MLS} and \ref{fig:bel_trc_QMDP}.
+The $Q_{MDP}$ case clearly shows to equal sets of peaks, which causes the stalling mentioned earlier.
+A similar visualization for the hallway problem using the $Q_{MDP}$ implementation and a run that did actually finish can be seen in figure \ref{fig:bel_hallway_QMDP}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %											%
@@ -298,7 +300,25 @@ A short visualization of the evolution of beliefs in both the MLS and $Q_{MDP}$ 
 
 \section{Partially observable environments: point-based methods}
 
+A performance comparison of the point-based Perseus algorithm and the $Q_{MDP}$ and MLS implementations was done using the hallway2 problem.
+An overview can be seen in table \ref{table:performance}, where $Pers_{\bigotimes}$ represents the execution of the Perseus algorithm with different sampling parameters
 
+This table demonstrates a clear difference between the relevant algorithms. \todo{Perseus10 sneller, Perseus100+ langer. Reward minder voor minder samples, maar veeeeeeel sneller. Zeggen of het nu beter of slechter is dan heuristical.}
+
+\begin{table}
+\centering
+\begin{tabular}{ c || c | c | c | c | c | c | c}
+\hfill & MLS & $Q_{MDP}$ & $Pers_{10}$ & $Pers_{100}$ & $Pers_{1000}$ & $Pers_{10000}$ \\
+\hline
+$\mu_{Reward}$ & 0.1896 & 0.09883 & & & & \\
+$\sigma_{Reward}$ & 0.1688 & 0.2166 & & & & \\
+\hline \hline
+$\mu_{Runtime}$ & & & & & & \\
+$\sigma_{Runtime}$ & & & & & &\\
+\end{tabular}
+\caption{Performance of the different algorithms for the hallway2 problem}
+\label{table:performance}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %											%
@@ -314,7 +334,24 @@ A short visualization of the evolution of beliefs in both the MLS and $Q_{MDP}$ 
 %											%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Multiagent planning under uncertainty}
+\section{Multi-agent planning under uncertainty}
+
+\subsubsection*{Comparison between multi-agent problems solved with MMDP}
+\todo{images invoegen!}
+multi betekenent samen denken, single apart, 3x2 paden uitgetekend in todo folder. SINGLE -> NOG NIET HIER UITWERKEN
+
+3 timings steeds omdat multi gedeelte met 2 vi's, single is apart.
+
+\subsubsection*{Performance comparison between Single-agent and Multi-agent implementations}
+
+\todo{figuurtjes met single-agent}
+
+\todo{performance verschillen}
+
+\todo{collision avoidance:
+3) Query position+intention of other robot, clear priority between robots.
+2) Look in 3x3 (for onedoor) + clear priority between robots.
+1) Dynamic programming -> Alle states waarbij mogelijks zelfde toestand prunen. (hier niet al te veel states die gaan wegvallen, nie heel efficient.)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %											%
@@ -322,7 +359,7 @@ A short visualization of the evolution of beliefs in both the MLS and $Q_{MDP}$ 
 %											%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\part{Final remarks}
+\part{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %											%
