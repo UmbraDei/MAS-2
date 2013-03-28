@@ -1,5 +1,5 @@
 %% Amount of runs to do for timing analysis.
-nbOfRuns = 20;
+nbOfRuns = 5;
 
 T = zeros(1,nbOfRuns+1);
 T2 = zeros(1,nbOfRuns+1);
@@ -18,6 +18,7 @@ T2 = T2(2:nbOfRuns+1);
 T3 = T3(2:nbOfRuns+1);
 
 %% Plot a comparison of the different runs. Prints the to the relevent folder.
+random = num2str(randi([1,100000]));
 
 figure(1);
 hold off;
@@ -70,23 +71,23 @@ title(horzcat('Runtime for value iteration on multiagent problem ', folderName))
 
 % Export images to the correct folder.
 figure(1);
-filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi.eps');
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi',random ,'.eps');
 print('-depsc2',filename);
-filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi.png');
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi',random ,'.png');
 print('-dpng',filename);
 hold off;
 
 figure(2);
-filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-2.eps');
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-2',random ,'.eps');
 print('-depsc2',filename);
-filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-2.png');
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-2',random ,'.png');
 print('-dpng',filename);
 hold off;
 
 figure(3);
-filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-3.eps');
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-3',random ,'.eps');
 print('-depsc2',filename);
-filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-3.png');
+filename = strcat('../../../Verslag/Timings/',folderName,'/timings_vi-3',random ,'.png');
 print('-dpng',filename);
 hold off;
 
@@ -99,9 +100,9 @@ mean_T3 = mean(T3)
 standardDeviation_T3 = std(T3)
 
 outputMatrix = [mean_T, standardDeviation_T; mean_T2, standardDeviation_T2; mean_T3, standardDeviation_T3];
-filename = strcat('../../../Verslag/Timings/',folderName,'/statistics.txt');
+filename = strcat('../../../Verslag/Timings/',folderName,'/statistics',random ,'.txt');
 save(filename, 'outputMatrix', '-ascii');
 
 outputMatrix = [T;T2;T3];
-filename = strcat('../../../Verslag/Timings/',folderName,'/data-timing.txt');
+filename = strcat('../../../Verslag/Timings/',folderName,'/data-timing',random ,'.txt');
 save(filename, 'outputMatrix', '-ascii');

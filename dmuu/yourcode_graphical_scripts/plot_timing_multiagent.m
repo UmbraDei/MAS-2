@@ -37,7 +37,7 @@ ylabel('Time(s)');
 title(horzcat('Runtime for value iteration on multiagent problem ', folderName));
 
 figure(2);
-legend('Algorithm viMultiAgent2', 'Algorithm viMultiAgentSingle', 'Location', 'East');
+legend('Algorithm viMultiAgent2', 'Algorithm viMultiAgentSingle');
 xlabel('Run');
 ylabel('Time(s)');
 limits = ylim;
@@ -49,7 +49,7 @@ title(horzcat('Runtime for value iteration on multiagent problem ', folderName))
 
 
 figure(3);
-legend('Algorithm viMultiAgent2', 'Algorithm viMultiAgentSingle', 'Location', 'East');
+legend('Algorithm viMultiAgent2', 'Algorithm viMultiAgentSingle');
 xlabel('Run');
 ylabel('Time(s)');
 ylim(limits);
