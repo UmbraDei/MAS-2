@@ -303,7 +303,11 @@ A similar visualization for the hallway problem using the $Q_{MDP}$ implementati
 A performance comparison of the point-based Perseus algorithm and the $Q_{MDP}$ and MLS implementations was done using the hallway2 problem.
 An overview can be seen in table \ref{table:performance}, where $Pers_{\bigotimes}$ represents the execution of the Perseus algorithm with different sampling parameters
 
-This table demonstrates a clear difference between the relevant algorithms. \todo{Perseus10 sneller, Perseus100+ langer. Reward minder voor minder samples, maar veeeeeeel sneller. Zeggen of het nu beter of slechter is dan heuristical.}
+This table demonstrates a clear difference between the relevant algorithms.
+To keep the total calculation time within reasonable bounds the Perseus algorithm was run 5 times with each parameter setting, and the statistics were calculated on these outputs.
+It's clearly visible that while both the reward values and calculation times for the Perseus algorithm differ significantly when the number of sampled beliefs is increased from 10 to 100, no real improvement (on the contrary actually) is seen for further increase.
+The results Perseus achieves at higher sampling parameters are indeed better than MLS or $Q_{MDP}$, but at a very high cost in computation.
+Depending on the required accuracy the trade-off can be made to exchange the achieved reward and computational complexity.
 
 \begin{table}
 \centering
@@ -320,7 +324,123 @@ $\sigma_{Runtime}$  & 0.01467 & 0.014556 & 0.2102 & 0.3610 & 0.9568 & 2.4624 \\
 \label{table:performance}
 \end{table}
 
-\todo{Based on 5 iterations for perseus}.
+\newgeometry{textwidth=16cm, textheight=25cm}
+\begin{figure}
+        \centering
+        \begin{subfigure}{0.4\textwidth}
+                \includegraphics[width=\textwidth]{todo/onedoor/path-multi.png}
+                \caption{Paths taken by the robots during a run with the multi-agent algorithms}
+                \label{fig:multi_onedoor_part1}
+                \hspace{10pt}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{todo/onedoor/timings_vi.png}
+                \caption{The runtime needed for both the normal and sparse implementations}
+                \label{fig:multi_onedoor_part2}
+                \hspace{-10pt}
+        \end{subfigure}
+        \caption{Multi-agent runs on the onedoor problem}
+        \label{fig:multi_onedoor}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}{0.4\textwidth}
+                \includegraphics[width=\textwidth]{todo/mit/path-multi.png}
+                \caption{Paths taken by the robots during a run with the multi-agent algorithms}
+                \label{fig:multi_mit_part1}
+                \hspace{10pt}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{todo/mit/timings_vi.png}
+                \caption{The runtime needed for both the normal and sparse implementations}
+                \label{fig:multi_mit_part2}
+                \hspace{-10pt}
+        \end{subfigure}
+        \caption{Multi-agent runs on the MIT problem}
+        \label{fig:multi_mit}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}{0.4\textwidth}
+                \includegraphics[width=\textwidth]{todo/isr/path-multi.png}
+                \caption{Paths taken by the robots during a run with the multi-agent algorithms}
+                \label{fig:multi_isr_part1}
+                \hspace{10pt}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{todo/isr/timings_vi.png}
+                \caption{The runtime needed for both the normal and sparse implementations}
+                \label{fig:multi_isr_part2}
+                \hspace{-10pt}
+        \end{subfigure}
+        \caption{Multi-agent runs on the ISR problem}
+        \label{fig:multi_isr}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}{0.4\textwidth}
+                \includegraphics[width=\textwidth]{todo/onedoor/path-single.png}
+                \caption{Paths taken during a run with independently acting robots}
+                \label{fig:single_onedoor_part1}
+                \hspace{10pt}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{todo/onedoor/timings_vi-2.png}
+                \caption{Runtime comparison for the joint and separately acting algorithms}
+                \label{fig:single_onedoor_part2}
+                \hspace{-10pt}
+        \end{subfigure}
+        \caption{Independently acting multi-agent runs on the onedoor problem}
+        \label{fig:single_onedoor}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}{0.4\textwidth}
+                \includegraphics[width=\textwidth]{todo/mit/path-single.png}
+                \caption{Paths taken during a run with independently acting robots}
+                \label{fig:single_mit_part1}
+                \hspace{10pt}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{todo/mit/timings_vi-2.png}
+                \caption{Runtime comparison for the joint and separately acting algorithms}
+                \label{fig:single_mi_part2}
+                \hspace{-10pt}
+        \end{subfigure}
+        \caption{Independently acting multi-agent runs on the MIT problem}
+        \label{fig:single_mit}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}{0.4\textwidth}
+                \includegraphics[width=\textwidth]{todo/isr/path-single.png}
+                \caption{Paths taken during a run with independently acting robots}
+                \label{fig:single_isr_part1}
+                \hspace{10pt}
+        \end{subfigure}
+        \quad
+        \begin{subfigure}{0.48\textwidth}
+        		\includegraphics[width=\textwidth]{todo/isr/timings_vi-2.png}
+                \caption{Runtime comparison for the joint and separately acting algorithms}
+                \label{fig:single_isr_part2}
+                \hspace{-10pt}
+        \end{subfigure}
+        \caption{Independently acting multi-agent runs on the ISR problem}
+        \label{fig:single_isr}
+\end{figure}
+
+\restoregeometry
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %											%
@@ -339,17 +459,23 @@ $\sigma_{Runtime}$  & 0.01467 & 0.014556 & 0.2102 & 0.3610 & 0.9568 & 2.4624 \\
 \section{Multi-agent planning under uncertainty}
 
 \subsubsection*{Comparison between multi-agent problems solved with MMDP}
-\todo{images invoegen!}
-multi betekenent samen denken, single apart, 3x2 paden uitgetekend in todo folder. SINGLE -> NOG NIET HIER UITWERKEN
-
-3 timings steeds omdat multi gedeelte met 2 vi's, single is apart.
+In this multi-agent case two robots will navigate different problem maps while avoiding collision.
+As the output generated by these algorithms provides a very extensive visualization of every step taken by both robots a clearer notation is chosen by showing only the path taken by each robot overlaid on the map.
+Every time a robot stays in place this is shown as a small zigzag in the path.
+Figures \ref{fig:multi_onedoor},\ref{fig:multi_mit} and \ref{fig:multi_isr} show these runs and a comparison in calculation time between the regular and sparse implementations.
 
 \subsubsection*{Performance comparison between Single-agent and Multi-agent implementations}
 
-\todo{figuurtjes met single-agent}
+Similar to the previous section figures \ref{fig:single_onedoor}, \ref{fig:single_mit} and \ref{fig:single_isr} show the paths taken by robots with separate decision making and a runtime comparison between the joint and this implementations.
+Computational performance can be seen to be significantly worse, and the MIT problem clearly shows that the lack of coordination produces less than optimal results.
 
-\todo{performance verschillen}
-
+Finally, there are several ways in which collisions between robots could be avoided:
+\begin{enumerate}
+	\item A dynamic programming implementation where all states that would have robots arriving on the same cell are pruned.
+	This wouldn't significantly improve performance as there are usually very few states that are pruned this way.
+	\item Looking around in the neighbouring cells in combination with a predetermined priority between robots would allow both robots to detect the presence of the other, and independently decide which one can go first.
+	\item If communication is possible querying the other robot for both its location and intentions, again with clear priorities, would allow semi-perfect calculability of mutually optimal paths.
+\end{enumerate}
 \todo{collision avoidance:
 3) Query position+intention of other robot, clear priority between robots.
 2) Look in 3x3 (for onedoor) + clear priority between robots.
