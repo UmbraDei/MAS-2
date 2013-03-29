@@ -9,7 +9,6 @@
 \usepackage{framed}
 \usepackage{subcaption}
 \usepackage[textwidth=13cm, textheight=22cm]{geometry}
-\usepackage{todonotes}
 
 \title{Report Multi-agent Systems Module II}
 \author{Tom Jacobs (s0214835), Thomas Uyttendaele (s0215028)}
@@ -476,10 +475,7 @@ Finally, there are several ways in which collisions between robots could be avoi
 	\item Looking around in the neighbouring cells in combination with a predetermined priority between robots would allow both robots to detect the presence of the other, and independently decide which one can go first.
 	\item If communication is possible querying the other robot for both its location and intentions, again with clear priorities, would allow semi-perfect calculability of mutually optimal paths.
 \end{enumerate}
-\todo{collision avoidance:
-3) Query position+intention of other robot, clear priority between robots.
-2) Look in 3x3 (for onedoor) + clear priority between robots.
-1) Dynamic programming -> Alle states waarbij mogelijks zelfde toestand prunen. (hier niet al te veel states die gaan wegvallen, nie heel efficient.)}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %											%
