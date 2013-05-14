@@ -1,0 +1,3 @@
+These files contain the encodings of the distance matrix of 4 STNs with 49, 97, 105 and 145 time point variables, respectively.
+Note that the distances given are not minimal distances.
+The value 10000 indicates infinity  
