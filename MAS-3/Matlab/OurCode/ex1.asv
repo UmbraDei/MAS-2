@@ -1,0 +1,4 @@
+function output = ex1(size)
+    name = strcat('stn', size
+    matrix = load(name);
+    output = FastFloyd(matrix);
