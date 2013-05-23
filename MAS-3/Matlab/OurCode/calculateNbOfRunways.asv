@@ -16,66 +16,63 @@ function [timings,countTimings, planesTogether]  = calculateNbOfRunways(inputMat
     %% Initial solving (infinite runways)
     outputstn = FastFloyd(stnmatrix);
     % Earliest timings
-    timings = - outputstn(:,1);
+    timings = -outputstn(:,1);
     
-    [countTimings, planesTogether] = calculateNbOfConcurrentPlanes(timings, sizeInput);
+    leavingTimePlane = zeros(sizeInput, 2);
+    for i = 1:sizeInput
+        leavingTimePlane(i,:) = [i, timings(3*i, 1)];
+    end
+    
+    leavingTimePlane = sortrows(leavingTimePlane, 2);
+    [countTimings, planesTogether] = calculateNbOfConcurrentPlanes(leavingTimePlane, sizeInput, timings);
     
     %% 
     
-        peak = getEarliestPeaks(timings, countTimings, planesTogether);
+        peak = getEarliestPeaks(countTimings, planesTogether);
         % add constraint
-        outputstn = addConstraintForPeak(outputstn, timings, peak);
+        outputstn = addConstraintForPeak(outputstn, leavingTimePlane, peak);
 
 
 end
 
-function [countTimings, planesTogether] = calculateNbOfConcurrentPlanes(timings, sizeInput)
+function [countTimings, planesTogether] = calculateNbOfConcurrentPlanes(leavingTimePlane, sizeInput, timings)
     countTimings = zeros(sizeInput, 1);
     planesTogether = cell(sizeInput, 1);
     
     for i=1:sizeInput
-        timingPlane1 = [timings(3*(i-1)+3, 1), timings(3*(i-1)+4, 1)];
+        index = leavingTimePlane(i,1);
         
-        planesTogether{i, 1} = cell(0,0);
+        timingPlane1 = [timings(3*(index-1)+3, 1), timings(3*(index-1)+4, 1)];
+        
+        planesTogether{index, 1} = cell(0,0);
         
         for j = i:sizeInput
-            timingPlane2 = [timings(3*(j-1)+3, 1), timings(3*(j-1)+4, 1)];
+            interIndex = leavingTimePlane(j,1);
+            timingPlane2 = [timings(3*(interIndex-1)+3, 1), timings(3*(interIndex-1)+4, 1)];
             isInInterval = checkIfInInterval(timingPlane1, timingPlane2); 
-            countTimings(i, 1) = countTimings(i, 1) + isInInterval;
+            
+            countTimings(index, 1) = countTimings(index, 1) + isInInterval;
             
             if isInInterval == 1
-                planesTogether{i, 1} = [planesTogether{i,1}, {j}];
+                planesTogether{index, 1} = [planesTogether{index,1}, {[interIndex, timings(3*(interIndex-1)+3, 1), timings(3*(interIndex-1)+4, 1)]}];
             end
         end
     end
 end
 
-function earliestPeak = getEarliestPeaks(timings, countTimings, planesTogether)
-    maxPeaks = max(countTimings);
-    [sizeInput,  ~] = size(countTimings);
-    earliestTiming = 10000;
-
-    for i=1:sizeInput
-        if maxPeaks == countTimings(i, 1);
-            earliestTiming = min(earliestTiming, timings(i, 1));
-        end
-    end
-    
-    for i=1:sizeInput
-        if maxPeaks == countTimings(i, 1) && earliestTiming == timings(i, 1)
-            earliestPeak = planesTogether{i, 1};
-            return;
-        end
-    end
+function earliestPeak = getEarliestPeaks(countTimings, planesTogether)
+    [maxPeaks, index] = max(countTimings);
+    earliestPeak = planesTogether{index, 1};
 end
 
-function outputstn = addConstraintForPeak(inputstn, timings, peak)
+function outputstn = addConstraintForPeak(inputstn, peak)
     
     [peakSize, ~] = size(peak);
-    mostFreedom = 0;
+    latestTiming = zeros(peakSize, 1);
     %% Select most freedom
     for i = 1:peakSize
         index = peak{i,1};
+        latestTiming = (1, 3*(index-1)+3)
         mostFreedom = max(mostFreedom, timings(index, 3) - timings(index,2)); 
     end
     
@@ -83,7 +80,6 @@ function outputstn = addConstraintForPeak(inputstn, timings, peak)
         for i = 1:peakSize
             index = peak{i,1};
             if timings(index, 3) - timings(index,2) == mostFreedom
-                for 
                 outputstn = newSTN(inputstn, plane1, plane2, 5);
             end
         end

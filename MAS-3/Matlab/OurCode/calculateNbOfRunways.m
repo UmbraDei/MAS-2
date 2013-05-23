@@ -1,4 +1,4 @@
-function [timings,countTimings, planesTogether]  = calculateNbOfRunways(inputMatrix)
+function [countTimings, planesTogether, outputstn]  = calculateNbOfRunways(inputMatrix)
     %% Creating matrix
     [sizeInput,~] = size(inputMatrix);
 
@@ -12,81 +12,85 @@ function [timings,countTimings, planesTogether]  = calculateNbOfRunways(inputMat
        stnmatrix(1, 3*(i-1)+3) = inputMatrix(i,3); 
     end
     
-    runways = stnmatrix;
     %% Initial solving (infinite runways)
-    outputstn = FastFloyd(stnmatrix);
-    % Earliest timings
-    timings = -outputstn(:,1);
-    %timings = sortrows(timings, 2);
-    [countTimings, planesTogether] = calculateNbOfConcurrentPlanes(timings, sizeInput);
+    tempOutputSTN = FastFloyd(stnmatrix);
+    
+    [countTimings, planesTogether] = shavePeak(tempOutputSTN, sizeInput);
     
     %% 
-    
-        peak = getEarliestPeaks(timings, countTimings, planesTogether);
+    while sum(abs(diag(tempOutputSTN))) == 0
+        disp(['Lusje aan het lopen', num2str(max(countTimings))]);
+        outputstn = tempOutputSTN;
+        [countTimings, planesTogether] = shavePeak(tempOutputSTN, sizeInput);
+        peak = getEarliestPeaks(countTimings, planesTogether);
         % add constraint
-        %outputstn = addConstraintForPeak(outputstn, timings, peak);
-
+        tempOutputSTN = addConstraintForPeak(outputstn, peak);
+    end
 
 end
 
-function [countTimings, planesTogether] = calculateNbOfConcurrentPlanes(timings, sizeInput)
+function [countTimings, planesTogether] = calculateNbOfConcurrentPlanes(leavingTimePlane, sizeInput, timings)
     countTimings = zeros(sizeInput, 1);
     planesTogether = cell(sizeInput, 1);
     
     for i=1:sizeInput
-        timingPlane1 = [timings(3*(i-1)+3, 1), timings(3*(i-1)+4, 1)];
+        index = leavingTimePlane(i,1);
         
-        planesTogether{i, 1} = cell(0,0);
+        timingPlane1 = [timings(3*(index-1)+3, 1), timings(3*(index-1)+4, 1)];
+        
+        planesTogether{index, 1} = cell(0,0);
         
         for j = i:sizeInput
-            timingPlane2 = [timings(3*(j-1)+3, 1), timings(3*(j-1)+4, 1)];
+            interIndex = leavingTimePlane(j,1);
+            timingPlane2 = [timings(3*(interIndex-1)+3, 1), timings(3*(interIndex-1)+4, 1)];
             isInInterval = checkIfInInterval(timingPlane1, timingPlane2); 
-            countTimings(i, 1) = countTimings(i, 1) + isInInterval;
+            
+            countTimings(index, 1) = countTimings(index, 1) + isInInterval;
             
             if isInInterval == 1
-                planesTogether{i, 1} = [planesTogether{i,1}, {j}];
+                planesTogether{index, 1} = [planesTogether{index,1}, {[interIndex, timings(3*(interIndex-1)+3, 1), timings(3*(interIndex-1)+4, 1)]}];
             end
         end
     end
 end
 
-function earliestPeak = getEarliestPeaks(timings, countTimings, planesTogether)
-    maxPeaks = max(countTimings);
-    [sizeInput,  ~] = size(countTimings);
-    earliestTiming = 10000;
-
-    for i=1:sizeInput
-        if maxPeaks == countTimings(i, 1);
-            earliestTiming = min(earliestTiming, timings(i, 1));
-        end
-    end
-    
-    for i=1:sizeInput
-        if maxPeaks == countTimings(i, 1) && earliestTiming == timings(i, 1)
-            earliestPeak = planesTogether{i, 1};
-            return;
-        end
-    end
+function earliestPeak = getEarliestPeaks(countTimings, planesTogether)
+    [~, index] = max(countTimings);
+    earliestPeak = planesTogether{index, 1};
 end
 
-function outputstn = addConstraintForPeak(inputstn, timings, peak)
+function outputstn = addConstraintForPeak(inputstn, peak)
     
-    [peakSize, ~] = size(peak);
-    mostFreedom = 0;
+    [~, peakSize] = size(peak);
+    latestTiming = zeros(peakSize, 1);
     %% Select most freedom
     for i = 1:peakSize
-        index = peak{i,1};
-        mostFreedom = max(mostFreedom, timings(index, 3) - timings(index,2)); 
+        index = peak{1, i}(1,1);
+        latestTiming(peakSize-i+1, 1) = inputstn(1, 3*(index-1)+3); % geinverteerd opslaan van de laatste timing
     end
     
-    if mostFreedom > 0
-        for i = 1:peakSize
-            index = peak{i,1};
-            if timings(index, 3) - timings(index,2) == mostFreedom
-                outputstn = newSTN(inputstn, plane1, plane2, 5);
-            end
-        end
-        
+    [~, latestIndex] = max(latestTiming);
+    latestIndex = peakSize - latestIndex +1; %geinverteerde matrix
+    
+    firstPlane = 1;
+    if latestIndex == 1
+        firstPlane = 2;
     end
-    outputstn = inputstn;
+    
+    delayedPlaneIndex = peak{1, latestIndex}(1,1);
+    firstPlaneIndex = peak{1, firstPlane}(1,1);
+    outputstn = newSTN(inputstn, 3*(firstPlaneIndex-1)+3, 3*(delayedPlaneIndex-1)+3, -5);
 end
+
+function [countTimings, planesTogether] = shavePeak(outputstn, sizeInput)
+    % Earliest timings
+    timings = -outputstn(:,1);
+    
+    leavingTimePlane = zeros(sizeInput, 2);
+    for i = 1:sizeInput
+        leavingTimePlane(i,:) = [i, timings(3*i, 1)];
+    end
+    
+    leavingTimePlane = sortrows(leavingTimePlane, 2);
+    [countTimings, planesTogether] = calculateNbOfConcurrentPlanes(leavingTimePlane, sizeInput, timings);
+end 
