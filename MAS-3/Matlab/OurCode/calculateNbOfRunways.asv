@@ -16,15 +16,15 @@ function [timings,countTimings, planesTogether]  = calculateNbOfRunways(inputMat
     %% Initial solving (infinite runways)
     outputstn = FastFloyd(stnmatrix);
     % Earliest timings
-    timings = -outputstn(:,1);
-    %timings = sortrows(timings, 2);
+    timings = - outputstn(:,1);
+    
     [countTimings, planesTogether] = calculateNbOfConcurrentPlanes(timings, sizeInput);
     
     %% 
     
         peak = getEarliestPeaks(timings, countTimings, planesTogether);
         % add constraint
-        %outputstn = addConstraintForPeak(outputstn, timings, peak);
+        outputstn = addConstraintForPeak(outputstn, timings, peak);
 
 
 end
@@ -83,6 +83,7 @@ function outputstn = addConstraintForPeak(inputstn, timings, peak)
         for i = 1:peakSize
             index = peak{i,1};
             if timings(index, 3) - timings(index,2) == mostFreedom
+                for 
                 outputstn = newSTN(inputstn, plane1, plane2, 5);
             end
         end
