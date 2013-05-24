@@ -1,0 +1,97 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{sidecap}
+\usepackage{framed}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{todonotes}
+\usepackage{appendix}
+\usepackage[textwidth=13cm, textheight=22cm]{geometry}
+
+\title{Report Multi-agent Systems Module III}
+\author{Tom Jacobs (s0214835), Thomas Uyttendaele (s0215028)}
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{First Assignment}
+\subsection{Earliest \& latest starting time}
+The first question focusses on using the \texttt{FastFloyd} algorithm to determine the earliest and latest starting times of the events specified. An implementation can be found in the \texttt{ex1.m} source file together with the \texttt{LoadMatrix} function.
+
+\subsection{Constraints}
+To add arbitrary STN-constraints the \texttt{newSTN} function is defined. It receives a constraint in the parameters and verifies that the constraint can be added without creating inconsistency. If so, the constraint is set in the matrix and the \texttt{FastFloyd} algorithm is applied again. An example testing this can be found as \texttt{ex2.m}.
+
+\subsection{Iterative schedule construction}
+\label{sec:iterative}
+The
+
+\subsection{Schedule monitoring}
+A
+
+\section{Second Assignment}
+B
+\todo{Bij freedom stoefen dat onze freedom voor 207 runways exact hetzelfde is als totale vrijheid door verschil tussen eerste en laatste tijdstip van de inputdata, rekening houdend met 20 minuten speling}
+\begin{appendix}
+\section{Examples and Traces}
+\phantom{*Easter Egg*}
+\subsection{Trace for matrix size 49 (Question \ref{sec:iterative}}
+\label{sec:app:iterative}
+\begin{tabular}{ l  c }
+Choose a value for variable 41 in the range of -627 and 791? & 658
+\\Choose a value for variable 7 in the range of -599 and 1065? & 921
+\\Choose a value for variable 32 in the range of 392 and 1787? & 528
+\\Choose a value for variable 15 in the range of -782 and 1049? & 219
+\\Choose a value for variable 48 in the range of 240 and 1380? & 1340
+\\Choose a value for variable 9 in the range of -1422 and -315? & -347
+\\Choose a value for variable 47 in the range of -1355 and -255? & -821
+\\Choose a value for variable 38 in the range of -1285 and -1149? & -1266
+\\Choose a value for variable 21 in the range of -209 and 127? & 99
+\\Choose a value for variable 37 in the range of -366 and 681? & 639
+\\Choose a value for variable 30 in the range of -979 and 459? & -928
+\\Choose a value for variable 42 in the range of -1036 and -224? & -277
+\\Choose a value for variable 31 in the range of 594 and 1109? & 984
+\\Choose a value for variable 35 in the range of 356 and 1113? & 653
+\\Choose a value for variable 28 in the range of 602 and 1602? & 773
+\\Choose a value for variable 33 in the range of -475 and -422? & -474
+\\Choose a value for variable 12 in the range of -690 and -650? & -689
+\\Choose a value for variable 5 in the range of 433 and 1149? & 1023
+\\Choose a value for variable 29 in the range of 235 and 263? & 244
+\\Choose a value for variable 46 in the range of 101 and 227? & 105
+\\Choose a value for variable 19 in the range of -259 and 364? & -21
+\\Choose a value for variable 36 in the range of -188 and 634? & 466
+\\Choose a value for variable 8 in the range of 676 and 798? & 736
+\\Choose a value for variable 20 in the range of -1330 and -579? & -844
+\\Choose a value for variable 34 in the range of 724 and 1034? & 958
+\\Choose a value for variable 13 in the range of -992 and -69? & -364
+\\Choose a value for variable 26 in the range of 322 and 323? & 322
+\\Choose a value for variable 4 in the range of 300 and 332? & 316
+\\Choose a value for variable 49 in the range of -955 and 733? & -381
+\\Choose a value for variable 24 in the range of 290 and 466? & 329
+\\Choose a value for variable 39 in the range of 1009 and 1086? & 1028
+\\Choose a value for variable 18 in the range of -814 and -670? & -713
+\\Choose a value for variable 44 in the range of 597 and 1020? & 1003
+\\Choose a value for variable 22 in the range of -753 and -388? & -703
+\\Choose a value for variable 6 in the range of 439 and 1223? & 641
+\\Choose a value for variable 40 in the range of -290 and -232? & -275
+\\Choose a value for variable 27 in the range of -795 and -485? & -720
+\\Choose a value for variable 45 in the range of -891 and -874? & -885
+\\Choose a value for variable 3 in the range of 141 and 201? & 156
+\\Choose a value for variable 17 in the range of -962 and -923? & -944
+\\Choose a value for variable 11 in the range of 147 and 153? & 152
+\\Choose a value for variable 23 in the range of -1059 and -408? & -701
+\\Choose a value for variable 43 in the range of -339 and -338? & -339
+\\Choose a value for variable 16 in the range of -895 and -232? & -395
+\\Choose a value for variable 10 in the range of -1644 and -883? & -1212
+\\Choose a value for variable 2 in the range of 224 and 1223? & 277
+\\Choose a value for variable 25 in the range of -400 and -212? & -253
+\\Choose a value for variable 14 in the range of -1600 and -964? & -1518
+\end{tabular}
+\\ \phantom{i} The chosen values are: 0   277   156   316  1023   641   921   736  -347 -1212   152  -689  -364 -1518   219  -395  -944  -713   -21  -844    99  -703  -701   329  -253   322  -720   773   244  -928   984   528  -474   958   653   466   639 -1266  1028  -275   658  -277  -339  1003  -885   105  -821  1340  -381
+\end{appendix}
+
+\end{document}
