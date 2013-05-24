@@ -82,24 +82,19 @@ end
 function outputstn = addConstraintForPeak(inputstn, peak, threshold)
     
     [~, peakSize] = size(peak);
-    latestTiming = zeros(peakSize, 1);
+    latestTiming = zeros(peakSize, 2);
     %% Select most freedom
     for i = 1:peakSize
         index = peak{1, i}(1,1);
-        latestTiming(peakSize-i+1, 1) = inputstn(1, 3*(index-1)+3); % geinverteerd opslaan van de laatste timing
+        latestTiming(peakSize-i+1, :) = [index, inputstn(1, 3*(index-1)+3)]; % geinverteerd opslaan van de laatste timing
     end
     
-    [~, latestIndex] = max(latestTiming);
-    latestIndex = peakSize - latestIndex +1; %geinverteerde matrix
-    
-    %%
-    firstPlane = 1;
-    if latestIndex == 1
-        firstPlane = 2;
+    latestTiming = sortrows(latestTiming, 2);
+    constraints = zeros(peakSize-threshold,3);
+    for i = threshold+1:peakSize
+        constraints(i-threshold,:) = [3*(latestTiming(1,1)-1)+3, 3*(latestTiming(i,1)-1)+3, -5];
     end
     
-    delayedPlaneIndex = peak{1, latestIndex}(1,1);
-    firstPlaneIndex = peak{1, firstPlane}(1,1);
-    outputstn = newSTN(inputstn, 3*(firstPlaneIndex-1)+3, 3*(delayedPlaneIndex-1)+3, -5);
+    outputstn = newSTN(inputstn, constraints);
 end
 

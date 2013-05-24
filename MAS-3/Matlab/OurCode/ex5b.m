@@ -1,20 +1,22 @@
 
 disp('3 runways');
-A = load('Output/3planes.mat');
+A = load('Output/3planes-b.mat');
 B = struct2cell(A);
 stn = B{1,1};
 timings = -stn(:,1);
 dividing3 = dividePlanes(timings, 3);
 
+
+
 disp('4 runways');
-A4 = load('Output/4planes.mat');
+A4 = load('Output/4planes-b.mat');
 B4 = struct2cell(A4);
 stn4 = B4{1,1};
 timings4 = -stn4(:,1);
 dividing4 = dividePlanes(timings4, 4);
 
 disp('207 runways');
-A207 = load('Output/4planes.mat');
+A207 = load('Output/207planes-b.mat');
 B207 = struct2cell(A207);
 stn207 = B207{1,1};
 timings207 = -stn207(:,1);
