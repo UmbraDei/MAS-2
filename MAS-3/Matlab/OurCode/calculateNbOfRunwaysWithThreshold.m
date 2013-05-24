@@ -1,4 +1,10 @@
 function [keepGoing, outputstn]  = calculateNbOfRunwaysWithThreshold(inputMatrix, threshold)
+    % Checks for the given inputMatrix and threshold if it is possible to
+    % create a solution. As returnvalue, the keepGoing is the status (2 =
+    % OK, 3 means possible)
+    % If it is possible, the outputstn will contain a stn that gives a
+    % valid solution if for the ealiest timings. 
+
     %% Creating matrix
     % +1: t_dep, +2: t_takeoff, +3: t_free
     [sizeInput,~] = size(inputMatrix);
@@ -26,10 +32,14 @@ function [keepGoing, outputstn]  = calculateNbOfRunwaysWithThreshold(inputMatrix
             keepGoing = 2;
             disp(['Lusje aan het lopen en klaar']);
         else
+            if peak{1,1}(1,2) == 923
+                'Debug'
+            end
             % add constraint
             tempOutputSTN = addConstraintForPeak(outputstn, peak, threshold);
-            if sum(abs(diag(tempOutputSTN))) ~= 0
+            if ischar(tempOutputSTN)
                 keepGoing = 3;
+                outputstn = tempOutputSTN;
             end
             disp(['Lusje aan het lopen: with first timing at ', num2str(peak{1,1}(1,2))]);
         end
@@ -88,8 +98,13 @@ function outputstn = addConstraintForPeak(inputstn, peak, threshold)
         index = peak{1, i}(1,1);
         latestTiming(peakSize-i+1, :) = [index, inputstn(1, 3*(index-1)+3)]; % geinverteerd opslaan van de laatste timing
     end
+    % Zorg ervoor dat indien 2 waarden dezelfde laatste take off hebben,
+    % degene die nu het laatst vertrekt, eerst zal verplaatst worden
+    % (minder overlap dan nu)
+    sortingColumn = latestTiming(:,1) + latestTiming(:,2)*max(latestTiming(:,1));
     
-    latestTiming = sortrows(latestTiming, 2);
+    latestTiming = [latestTiming sortingColumn];
+    latestTiming = sortrows(latestTiming, 3);
     constraints = zeros(peakSize-threshold,3);
     for i = threshold+1:peakSize
         constraints(i-threshold,:) = [3*(latestTiming(1,1)-1)+3, 3*(latestTiming(i,1)-1)+3, -5];
