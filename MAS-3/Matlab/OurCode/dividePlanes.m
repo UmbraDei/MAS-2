@@ -1,8 +1,5 @@
-function dividedPlanes = dividePlanes(fileName, nbOfRunways)
-   A = load(fileName);
-   B = struct2cell(A);
-   stn = B{1,1};
-   timings = -stn(:,1);
+function dividedPlanes = dividePlanes(timings, nbOfRunways)
+
    [sizeInput, ~] = size(timings);
    sizeInput = (sizeInput-1)/3;
    leavingTimePlane = zeros(sizeInput, 2);
@@ -65,7 +62,7 @@ function dividedPlanes = dividePlanes(fileName, nbOfRunways)
 
    dividedPlanes = linprog(f,A,b);
    freedom = -f*dividedPlanes
-   nbOfEquations;
+   nbOfEquations
    currentEquation;
 end 
 

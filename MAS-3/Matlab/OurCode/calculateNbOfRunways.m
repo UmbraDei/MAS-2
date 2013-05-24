@@ -1,5 +1,6 @@
 function [countTimings, planesTogether, outputstn]  = calculateNbOfRunways(inputMatrix)
     %% Creating matrix
+    % +1: t_dep, +2: t_takeoff, +3: t_free
     [sizeInput,~] = size(inputMatrix);
 
     stnmatrix = 10000*(ones(1 + 3*sizeInput, 1 + 3*sizeInput) - diag(ones(1 + 3*sizeInput,1)));
