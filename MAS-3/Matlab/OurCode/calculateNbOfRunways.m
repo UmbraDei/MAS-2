@@ -19,12 +19,13 @@ function [countTimings, planesTogether, outputstn]  = calculateNbOfRunways(input
     
     %% 
     while sum(abs(diag(tempOutputSTN))) == 0
-        disp(['Lusje aan het lopen', num2str(max(countTimings))]);
+        
         outputstn = tempOutputSTN;
         [countTimings, planesTogether] = shavePeak(tempOutputSTN, sizeInput);
         peak = getEarliestPeaks(countTimings, planesTogether);
         % add constraint
         tempOutputSTN = addConstraintForPeak(outputstn, peak);
+        disp(['Lusje aan het lopen: ', num2str(max(countTimings)), ' with first timing at ', num2str(peak{1,1}(1,2))]);
     end
 
 end
@@ -72,6 +73,7 @@ function outputstn = addConstraintForPeak(inputstn, peak)
     [~, latestIndex] = max(latestTiming);
     latestIndex = peakSize - latestIndex +1; %geinverteerde matrix
     
+    %%
     firstPlane = 1;
     if latestIndex == 1
         firstPlane = 2;
