@@ -20,5 +20,10 @@ function output = newSTN(matrix, constraints)
         matrix(t2, t) = delta;
     end
     output = FastFloyd(matrix);
+    
+    if sum(abs(diag(output)));
+        output = 'Inconsistent';
+        return
+    end 
 end
     

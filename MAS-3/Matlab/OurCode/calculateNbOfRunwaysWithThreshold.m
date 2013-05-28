@@ -40,6 +40,7 @@ function [keepGoing, outputstn]  = calculateNbOfRunwaysWithThreshold(inputMatrix
             if ischar(tempOutputSTN)
                 keepGoing = 3;
                 outputstn = tempOutputSTN;
+                disp(['Lusje aan het lopen en niet mogelijk']);
             end
             disp(['Lusje aan het lopen: with first timing at ', num2str(peak{1,1}(1,2))]);
         end
