@@ -9,3 +9,4 @@ A2 = newSTN(A, [42, 41, 9000]);
 change_A2 = sum(sum(abs(A2))) - sum(sum(abs(A)))
 A3 = newSTN(A, [42, 41, 9000; 14, 16, 500]);
 change_A3 = sum(sum(abs(A3))) - sum(sum(abs(A)))
+A4 = newSTN(A, [42, 41, 9000; 41, 42, -5000])
