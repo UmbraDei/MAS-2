@@ -42,12 +42,15 @@ function [keepGoing, outputstn]  = calculateNbOfRunwaysWithThreshold(inputMatrix
             end
             % Add constraints to eliminate the peak
             tempOutputSTN = addConstraintForPeak(outputstn, peak, threshold);
+            [~, nbOfElementsInPeak] = size(peak);
+            disp(['Loop is running and arrived at timining ', num2str(peak{1,1}(1,2)), ' with ', num2str(nbOfElementsInPeak), ' constraints.']);
             if ischar(tempOutputSTN) % Check if matrix is still valid
                 keepGoing = 3;
                 outputstn = tempOutputSTN;
                 disp(['Loop was running and no possible solution.']);
             end
-            disp(['Loop is running and arrived at timining ', num2str(peak{1,1}(1,2))]);
+            
+            
         end
         
     end

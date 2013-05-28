@@ -1,0 +1,1 @@
+A = gpuArray(rand(2^16,1));
