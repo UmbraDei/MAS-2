@@ -1,3 +1,6 @@
+% This script will check the choosen values, in case not valid, it will
+% show you the first value that is invalid.
+
 inputSize = 145;
 resultMatrix = importdata('correct145.tab');
 

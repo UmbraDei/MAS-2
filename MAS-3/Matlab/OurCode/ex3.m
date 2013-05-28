@@ -1,10 +1,12 @@
+% This script let you choose values for a given stn problem. By placing the
+% isAutomatic on 1, the script will choose random values.
 inputSize = 49;
 stnMatrix = loadMatrix(inputSize);
 resultMatrix = zeros(1, inputSize);
 selectedIndices = [];
 
 global isAutomatic
-isAutomatic = 0;
+isAutomatic = 1;
 
 for i=2:inputSize
    [stnMatrix, index, value] = chooseValueSTN(stnMatrix, selectedIndices);

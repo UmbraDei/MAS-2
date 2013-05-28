@@ -1,3 +1,4 @@
+% A script to check if the interval script is valid.
 checkIfInInterval([1,2], [3,4])
 checkIfInInterval([1,2], [-1,0])
 checkIfInInterval([1,2], [0, 1.5])

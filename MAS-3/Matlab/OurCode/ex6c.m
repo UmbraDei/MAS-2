@@ -1,4 +1,6 @@
-%% 4 constraints tussen de 2 blokken!
+% Try to split the problem and calculate the freedom.
+
+%% 4 constraints between the 2 blocks!
 t1M = [3, 8, 6, 10];
 t2M = [8, 3, 10, 6];
 tStrings = { 'a'; ... %1
@@ -14,12 +16,13 @@ tStrings = { 'a'; ... %1
         'R^B_{ET}'; ... %11
         'W^B_{ST}'; ... %12
         'W^B_{ET}'}; %13
-%% Bereken alles voor STN en flex
+    
+%% Calculate the STN and flex
 stn = opstellenSTN6a();
 [oplossing, flex] = determineFlexFromSTN(stn);
 oplossing = round(oplossing); %Afronden om inconsistenties te voorkomen.
 
-%% Constraints toevoegen
+%% Add the constraints
 for i = 1:4
     % t_index1 - t_index2 <= ...
     index1 = t1M(1, i);
@@ -32,6 +35,6 @@ for i = 1:4
     disp(['Extra constraint: z_0 - ', tStrings{index2,1}, ' <= ', num2str(constraint2)]); 
 end
 
-%% Bereken nieuwe flex
+%% Calculate new flex as control
 [oplossing3, flex3] = determineFlexFromSTN(stn);
 

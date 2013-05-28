@@ -1,4 +1,5 @@
 function stn = opstellenSTN6a()
+    % Create the basic STN for 6a 
     stn = 10000*ones(13,13) - 10000*diag(ones(13,1));
     
     %% Interval

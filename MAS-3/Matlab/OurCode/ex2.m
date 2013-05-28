@@ -1,3 +1,6 @@
+% This script will add constraints to a given stn and check if it is still
+% valid afterwards.
+
 O = loadMatrix(5)
 O1 = newSTN(O, [3, 2, 0]) 
 O2 = newSTN(O, [1, 4, 1]);

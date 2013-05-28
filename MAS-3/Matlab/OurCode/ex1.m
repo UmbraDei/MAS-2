@@ -1,4 +1,5 @@
-
+% This script will create file with the realiest and latest timings of
+% planning for all sizes of input.
 
 possibleSizes = [49, 97, 105, 145];
 [~,nbSizes] = size(possibleSizes);

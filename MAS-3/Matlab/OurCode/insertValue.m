@@ -1,5 +1,6 @@
 function outputSTN = insertValue(inputSTN, index, value)
-
+    % Insert a value in an stn
+    
     inputSTN(1, index) = value;
     inputSTN(index, 1) = -value;
     pink = inputSTN;
@@ -10,6 +11,7 @@ function outputSTN = insertValue(inputSTN, index, value)
         error('STN:NonZeroDiag', 'ERROR: non zero elements on the diagonal');
     end
     
+    % remove the given column and row
     outputSTN(index,:) = [];
     outputSTN(:, index) = [];
     
