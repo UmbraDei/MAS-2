@@ -4,7 +4,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
-\usepackage{caption}
+\usepackage[width=.75\textwidth]{caption}
 \usepackage{sidecap}
 \usepackage{framed}
 \usepackage{subcaption}
@@ -34,22 +34,49 @@ To allow the construction of arbitrary schedules, an STN is loaded and the user 
 For this question, a schedule is being checked as input step by step. As soon as a constraint is violated, the process stops and determines that the current input is invalid. Otherwise, the schedule is accepted as valid. \texttt{ex4.m} provides an implementation with a correct and incorrect size 145 input exported in table form, that are equal except for a value of 0 on $a_{42}$.
 
 \section{Second Assignment}
-\subsection{Determining the number of runways}
+\subsection{Scheduling airplanes}
+\subsubsection{Determining the number of runways}
 \label{sec:nb_of_runways}
-To calculate the number of runways required, the function  \texttt{calculateNbOfRunwaysWithThreshold} is created with an STN modelling the problem. It starts from searching for assignments of the planes on the runways using earliest possible scheduling. Once the assignment is found, a maximum amount of runways required throughout the schedule is determined. The function expects a \texttt{threshold} parameter, that can be interpreted as the amount of runways that are overall available. Entering 207 here (which is the total number of planes) implies a semi-infinite amount of runways, thus allowing perfect earliest possible allocation.
+To calculate the number of runways required, the function  \texttt{calculate\-Nb\-Of\-Run\-ways\-With\-Thres\-hold} is created with an STN modelling the problem. It starts from searching for assignments of the planes on the runways using earliest possible scheduling. Once the assignment is found, a maximum amount of runways required throughout the schedule is determined. The function expects a \texttt{threshold} parameter, that can be interpreted as the amount of runways that are overall available. Entering 207 here (which is the total number of planes) implies a semi-infinite amount of runways, thus allowing perfect earliest possible allocation.
 
 Running the algorithm initially returns that 4 runways are required. Subsequently, a threshold of 3 and later 2 are set. This causes peak shaving in the algorithm in an attempt to optimize the solutions to require less runways. Peak shaving iteratively adds extra constraints in the STN that force the first conflicting plane to come at least 5 minutes after the earlies plane in the conflicting timeslot. The new STN is now used for the next iteration of the algorithm until no more conflicts show up. It turns out that this succeeds up to the requirement of 3 runways, with an attempt at using only 2 fails starting at \textbf{15:19}, thus showing no more optimal solution exists. The overall process is implemented in \texttt{ex5.m}
 
-\subsubsection{Flexibility of minimum}
+\subsubsection{Flexibility with minimal runways}
 The first assignment found during peak shaving with the STN constructed in section \ref{sec:nb_of_runways} in an attempt to use only 3 runways is the one used from here on. This is thus by definition the earliest possible assignment on 3 runways.
 
+This question is resolved by the first part of \texttt{ex5b.m}. The flexibility that this schedule has can be found in table \ref{table:flex}. 
+
+\begin{table}
+\centering
+\begin{tabular}{ r || c | c | c | c}
+
+Number of Runways & 3 & 4 & 207 & - \\ \hline
+Flexibility & 4687 &  6112 & 11371 & 11371
+\end{tabular}
+\caption{The maximum flexibility for different amounts of runways. \emph{The final column represents the theoretical maximum flexibility achievable.}}
+\label{table:flex}
+\end{table}
+\subsubsection{Flexibility comparison scenario's}
+Similarly to the previous question the rest of \texttt{ex5b.m} executes the algorithm again for 4 and 207 runways. The input for 4 runways is provided again by the result of section \ref{sec:nb_of_runways}, giving us the flexibility listed in table \ref{table:flex}.
+
+Just to prove the correctness of the algorithm, the flexibility of a schedule with 207 runways is calculated as well. This turns out to be the exact same value as one would get from simply summing all the intervals in the original \texttt{standplan.txt}, and subtracting 20 minutes everywhere to account for the difference between departure and take-off time.
+
+\subsection{Planning for 3 people}
+\subsubsection{Flexibility of the STN}
+\label{sec:flex_boerkoel_1}
+
+The STN is constructed and a specific function \texttt{determineFlexFromSTN} has been implemented to determine the flexibility given a certain STN. This is determined to be 180, as found by \texttt{ex6a.m}
+
+\subsubsection{Flexibility of the decoupled version}
+Analogously to section \ref{sec:flex_boerkoel_1}, the flexibility found by \texttt{ex6b.m} is now 135. This drop of 45 minutes is due entirely to a reduction in \emph{Bill}'s flexibility. The reduction process forced activity $R^{B}_{ST}$ to the point in time right in the middle of its previous interval. From here on the flexibility later in time is thus reduced from 120 tot 75 minutes.
+
+\subsubsection{Flexibility preserving decoupling}
 
 
 
-\todo{Bij freedom stoefen dat onze freedom voor 207 runways exact hetzelfde is als totale vrijheid door verschil tussen eerste en laatste tijdstip van de inputdata, rekening houdend met 20 minuten speling}
 \begin{appendix}
 \section{Examples and Traces}
-\phantom{*Easter Egg*}
+\phantom{Easter Egg}
 \subsection{Trace for matrix size 49 (Question \ref{sec:iterative}}
 \label{sec:app:iterative}
 \begin{tabular}{ l  c }
