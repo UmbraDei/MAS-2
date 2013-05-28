@@ -4,13 +4,14 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
-\usepackage[width=.75\textwidth]{caption}
+\usepackage[width=.85\textwidth]{caption}
 \usepackage{sidecap}
 \usepackage{framed}
 \usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage{todonotes}
 \usepackage{appendix}
+\usepackage{algorithm2e}
 \usepackage[textwidth=13cm, textheight=22cm]{geometry}
 
 \title{Report Multi-agent Systems Module III}
@@ -71,8 +72,55 @@ The STN is constructed and a specific function \texttt{determineFlexFromSTN} has
 Analogously to section \ref{sec:flex_boerkoel_1}, the flexibility found by \texttt{ex6b.m} is now 135. This drop of 45 minutes is due entirely to a reduction in \emph{Bill}'s flexibility. The reduction process forced activity $R^{B}_{ST}$ to the point in time right in the middle of its previous interval. From here on the flexibility later in time is thus reduced from 120 tot 75 minutes.
 
 \subsubsection{Flexibility preserving decoupling}
+\label{sec:preserving_decoupling}
+To achieve a better decoupling the flexibility is again determined as the solution for maximum flexibility. There exist 4 different constraints between the partitions of the problem. Each of these constraints can be split into two subconstraints involving $z_0$. The results (which is determined in \texttt{ex6c.m}) are the following constraints in table \ref{table:constraints}
 
+\begin{table}
+\centering
+\begin{tabular}{ c | c | c }
+Constraint & New Value & Old Value \\ \hline
+$TP^C_{ET} - z_0 \leq $ & 600 & 720 \\
+$z_0 - TR^A_{ST}\leq $ & -600 & -480 \\
+$TR^A_{ST} - z_0\leq $ & 603 & 720 \\
+$z_0 - TP^C_{ET}\leq $ & -594 & -480 \\
+$R^A_{ST} - z_0 \leq $ & 480 & 720 \\
+$z_0 - R^B_{ST} \leq $ & -480 & -480 \\
+$R^B_{ST} - z_0\leq $ & 480 & 720 \\
+$z_0 - R^A_{ST} \leq $ & -480 & -480
+\end{tabular}
+\caption{Overview of the new constraints introduced in section \ref{sec:preserving_decoupling}}
+\label{table:constraints}
+\end{table}
 
+\subsubsection{Decoupling for even distribution of flexibility}
+The algorithm is described in algorithm \ref{alg:decoupling}. Our code can be found in \texttt{ex6d.m}. The maximum flexibility for \emph{Chris} and \emph{Ann} is limited to 30, so \emph{Bill}'s is immediately found as 120. For this reason an easier manual implementation was done.
+
+\noindent\makebox[\textwidth][c]{
+\begin{minipage}{0.8\textwidth}
+\centering
+\begin{algorithm}[H]
+\SetAlgoLined
+ \KwData{\texttt{TotalFlexibility}: Flexibility for the whole problem}         
+ \KwData{\texttt{PartitionSet} : Set of all partitions}
+ \KwData{\texttt{FinalPartitions} : The set of all partitions, initially empty}
+ \KwResult{\texttt{ExtraConstraints} : The set of all extra constraints based on individual flexibility}\phantom{\;}
+ Calculate TotalFlexibility\; \phantom{\;}
+ \While{PartitionSet not empty}{\phantom{\;}
+  ThresholdFlexibility = $\frac{TotalFlexibility}{\#PartitionSet}$ \;\phantom{\;}
+  \ForAll{Partition in PartitionSet}{\phantom{\;}
+   \If{$Flexibility_{partition} \leq ThresholdFlexibility$}{\phantom{\;}
+   Remove Partition from PartitionSet\;\phantom{\;}
+   Add Partition to FinalPartitions \;\phantom{\;}
+   Add Constraint $TargetFunction_{Partition} = $\\$ Flexibility_{Partition}$ to ExtraConstraints\;\phantom{\;}
+   TotalFlexibility = TotalFlexibility - $Flexibility_{Partition}$\;
+   }
+  }
+ }
+ \caption{Algorithm for decoupling}
+ \label{alg:decoupling}
+\end{algorithm}
+\end{minipage}}
+ 
 
 \begin{appendix}
 \section{Examples and Traces}
