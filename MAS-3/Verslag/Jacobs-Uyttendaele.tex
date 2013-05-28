@@ -22,30 +22,52 @@
 
 \section{First Assignment}
 \subsection{Earliest \& latest starting time}
-The first question focusses on using the \texttt{FastFloyd} algorithm to determine the earliest and latest starting times of the events specified. An implementation can be found in the \texttt{ex1.m} source file together with the \texttt{LoadMatrix} function.
+The first question focusses on using the \texttt{FastFloyd} algorithm to determine the earliest and latest starting times of the events specified. An implementation can be found in the \texttt{ex1.m} source file together with the \texttt{LoadMatrix} function. The minimal timings are the negated values of the first column, while the first row represents the maximum timings.
 
 \subsection{Constraints}
-To add arbitrary STN-constraints the \texttt{newSTN} function is defined. It receives a constraint in the parameters and verifies that the constraint can be added without creating inconsistency. If so, the constraint is set in the matrix and the \texttt{FastFloyd} algorithm is applied again. To allow more efficient processing later on a matrix of constraints can also be entered that are checked in their entirety. An example testing the implementation can be found as \texttt{ex2.m}, that shows inconsistent and consistent constraints added to \texttt{stn5} and \texttt{snt49}.
+\label{sec:constraints}
+To add arbitrary STN-constraints the \texttt{newSTN} function is defined. It receives a constraint in the parameters and verifies that the constraint can be added without creating an inconsistency. This is done by checking that the new constraint isn't tighter than the minimal value already there. \\
+e.g. The contraint $t_i - t_j \leq \delta$ is allowed if $\delta \geq -STN_{i,j}$.
+\\If this is true and $\delta$ is smaller than the current value, the constraint is set in the matrix and the \texttt{FastFloyd} algorithm is applied again. To allow more efficient processing later on a matrix of constraints can also be entered that are checked in their entirety. In that case, newly introduced inconsistencies are detected by checking if the diagonal elements of the STN remain zero. An example testing the implementation can be found as \texttt{ex2.m}, that shows inconsistent and consistent constraints added to \texttt{stn5} and \texttt{snt49}.
 
 \subsection{Iterative schedule construction}
 \label{sec:iterative}
-To allow the construction of arbitrary schedules, an STN is loaded and the user is prompted for input. This is done in \texttt{ex3.m}. If the value entered isn't inside the allowed interval it is refused, and otherwise added to the resulting matrix and the \texttt{FastFloyd} algorithm is run to ensure the STN is updated. Appendix \ref{sec:app:iterative} shows a trace for the problem \texttt{stn49.tab}
+To allow the construction of arbitrary schedules, an STN is loaded and the user is prompted for input. Should the allowed range of inputs have a minimum and maximum value that are the same, the user is informed that this value is chosen by default and thus doesn't need to enter it himself. This is done in \texttt{ex3.m}. If the value entered isn't inside the allowed interval it is refused, and otherwise added to the resulting matrix and the \texttt{FastFloyd} algorithm is run to ensure the STN is updated. Afterwards the column and row of the chosen event are removed from the matrix. This is allowed as running the \texttt{FastFloyd} algorithm ensures the newly applied changes have been propagated across the STN. Appendix \ref{sec:app:iterative} shows a trace for the problem \texttt{stn49.tab}
 
 \subsection{Schedule monitoring}
-For this question, a schedule is being checked as input step by step. As soon as a constraint is violated, the process stops and determines that the current input is invalid. Otherwise, the schedule is accepted as valid. \texttt{ex4.m} provides an implementation with a correct and incorrect size 145 input exported in table form, that are equal except for a value of 0 on $a_{42}$.
+For this question, a schedule is being checked as input step by step chronologically against the STN provided. Every iteration it is verified that the input value lies between the minimal and maximal values specified by the STN. Should this value be allowed, it is entered into the STN using the method from section \ref{sec:iterative}. As soon as a constraint is violated, the process stops and determines that the current input is invalid. Otherwise, the schedule is accepted as valid. \texttt{ex4.m} provides an implementation with a correct and incorrect input of size exported in table form, that are equal except for a value of 0 on $a_{42}$.
 
 \section{Second Assignment}
 \subsection{Scheduling airplanes}
 \subsubsection{Determining the number of runways}
 \label{sec:nb_of_runways}
-To calculate the number of runways required, the function  \texttt{calculate\-Nb\-Of\-Run\-ways\-With\-Thres\-hold} is created with an STN modelling the problem. It starts from searching for assignments of the planes on the runways using earliest possible scheduling. Once the assignment is found, a maximum amount of runways required throughout the schedule is determined. The function expects a \texttt{threshold} parameter, that can be interpreted as the amount of runways that are overall available. Entering 207 here (which is the total number of planes) implies a semi-infinite amount of runways, thus allowing perfect earliest possible allocation.
+To calculate the number of runways required, the function  \texttt{calculate\-Nb\-Of\-Run\-ways\-With\-Thres\-hold} is created with an STN modelling the problem. The function expects a \texttt{threshold} parameter, that can be interpreted as the amount of runways that are overall available. It starts by creating an STN for the problem and running the \texttt{FastFloyd} algorithm. Then an assignment of the planes over the runways using earliest possible scheduling on their take-off time.
 
-Running the algorithm initially returns that 4 runways are required. Subsequently, a threshold of 3 and later 2 are set. This causes peak shaving in the algorithm in an attempt to optimize the solutions to require less runways. Peak shaving iteratively adds extra constraints in the STN that force the first conflicting plane to come at least 5 minutes after the earlies plane in the conflicting timeslot. The new STN is now used for the next iteration of the algorithm until no more conflicts show up. It turns out that this succeeds up to the requirement of 3 runways, with an attempt at using only 2 fails starting at \textbf{15:19}, thus showing no more optimal solution exists. The overall process is implemented in \texttt{ex5.m}
+The first peak (a peak being a timeslot where more planes are departing than runways available as the threshold) chronologically encountered is to be eliminated. All planes from this peak are sorted by their last possible take-off time, because their scheduling is the most flexible. Should two planes have an equal latest take-off time their ordering by earliest take-off time is used. The first \emph{threshold} number of planes is kept, and all others in the peak get an additional constraint of coming at least 5 minutes after the first plane in that peak. These constraints are added using the method specified in section \ref{sec:constraints}.
+
+This is repeated either until the STN becomes invalid or no peaks remain. If it is invalid no solutions are possible with the chosen threshold, otherwise, the calculated STN is returned and a possible solution can be found by negating its first column.
+
+With the example supplied, the algorithm fails with thresholds 1 and 2, respectively at time points \textbf{10:55} and  \textbf{15:23}. At first success with threshold 3 the solution found is exported for later use. To achieve this solution 11 new sets of constraints had to be added. For practicality, this is repeated with thresholds 4 and 207, where it of course succeeds as well, without the need for any added constraints. This implies that even with 207 runways only 4 will be used at the same time. It will later be shown however, that while at first sight these thus appear similar, this still has serious implications for the flexibility of the schedules.
 
 \subsubsection{Flexibility with minimal runways}
 The first assignment found during peak shaving with the STN constructed in section \ref{sec:nb_of_runways} in an attempt to use only 3 runways is the one used from here on. This is thus by definition the earliest possible assignment on 3 runways.
 
-This question is resolved by the first part of \texttt{ex5b.m}. The flexibility that this schedule has can be found in table \ref{table:flex}. 
+Calculation of the flexibility can be done in two ways. Either based on the STN itself, or the one preferred here using the earliest departure and take-off times from the original input and earliest take-off times from the calculated STN. From the solution found earlier, only the order in which the planes leave is kept. For each individual plane the following constraints are created.
+\begin{itemize}
+\item $-t_{dep}^- \leq -earliestDepTime$
+\item $t_{takeoff}^+ \leq latestTakeoffTime$
+\item $t_{dep}^+ -t_{takeoff}^- \leq -20$  
+\item $t_{dep}^- - t_{dep}^+ \leq 0$
+\item $t_{takeoff}^- - t_{takeoff}^+ \leq 0$
+\end{itemize}
+Relations between planes are then described as such, where $i$ is the current plane and $i+threshold$ is the number of the plane for which the constraint is to be added:
+\begin{equation}
+\forall i \in 1..(\#_{planes}-threshold) : t_{takeoff,i}^+ + 5 \leq t_{takeoff,i+threshold}^-
+\end{equation}
+
+This enforces that each further plane is is placed at least 5 minutes later, resolving the peak. Using the \texttt{linprog} function in \textsc{Matlab} the minimum of a defined target function, being the maximum flexibility, can be found.
+
+This question itself is solved by the first part of \texttt{ex5b.m}. The flexibility that this schedule has can be found in table \ref{table:flex}. 
 
 \begin{table}
 \centering
@@ -57,6 +79,8 @@ Flexibility & 4687 &  6112 & 11371 & 11371
 \caption{The maximum flexibility for different amounts of runways. \emph{The final column represents the theoretical maximum flexibility achievable.}}
 \label{table:flex}
 \end{table}
+
+
 \subsubsection{Flexibility comparison scenario's}
 Similarly to the previous question the rest of \texttt{ex5b.m} executes the algorithm again for 4 and 207 runways. The input for 4 runways is provided again by the result of section \ref{sec:nb_of_runways}, giving us the flexibility listed in table \ref{table:flex}.
 
@@ -121,10 +145,10 @@ The algorithm is described in algorithm \ref{alg:decoupling}. Our code can be fo
 \end{algorithm}
 \end{minipage}}
  
+\begin{appendix}\let\cleardoublepage\clearpage
 
-\begin{appendix}
 \section{Examples and Traces}
-\phantom{Easter Egg}
+%\phantom{Easter Egg}
 \subsection{Trace for matrix size 49 (Question \ref{sec:iterative}}
 \label{sec:app:iterative}
 \begin{tabular}{ l  c }
