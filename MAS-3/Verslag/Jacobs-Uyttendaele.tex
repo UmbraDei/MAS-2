@@ -65,7 +65,7 @@ Relations between planes are then described as such, where $i$ is the current pl
 \forall i \in 1..(\#_{planes}-threshold) : t_{takeoff,i}^+ + 5 \leq t_{takeoff,i+threshold}^-
 \end{equation}
 
-This enforces that each further plane is is placed at least 5 minutes later, resolving the peak. Using the \texttt{linprog} function in \textsc{Matlab} the minimum of a defined target function, being the maximum flexibility, can be found.
+This enforces that each further plane is is placed at least 5 minutes later, resolving the peak. Using the \texttt{linprog} function in \textsc{Matlab} the minimum of a defined target function, being the maximum flexibility, can be found. This is not necessarily an optimal solution.
 
 This question itself is solved by the first part of \texttt{ex5b.m}. The flexibility that this schedule has can be found in table \ref{table:flex}. 
 
@@ -82,22 +82,21 @@ Flexibility & 4687 &  6112 & 11371 & 11371
 
 
 \subsubsection{Flexibility comparison scenario's}
-Similarly to the previous question the rest of \texttt{ex5b.m} executes the algorithm again for 4 and 207 runways. The input for 4 runways is provided again by the result of section \ref{sec:nb_of_runways}, giving us the flexibility listed in table \ref{table:flex}.
+Similarly to the previous question the rest of \texttt{ex5b.m} executes the algorithm again for 4 and 207 runways. The input for 4 runways is provided again by the result of section \ref{sec:nb_of_runways}, giving us the flexibility listed in table \ref{table:flex}. This $30.4\%$ flexibility improvement from 3 to 4 runways was expected. It is also clearly visible that the flexibility will grow asymptotically to its maximum value reached at 207 runways.
 
 Just to prove the correctness of the algorithm, the flexibility of a schedule with 207 runways is calculated as well. This turns out to be the exact same value as one would get from simply summing all the intervals in the original \texttt{standplan.txt}, and subtracting 20 minutes everywhere to account for the difference between departure and take-off time.
 
 \subsection{Planning for 3 people}
 \subsubsection{Flexibility of the STN}
 \label{sec:flex_boerkoel_1}
-
-The STN is constructed and a specific function \texttt{determineFlexFromSTN} has been implemented to determine the flexibility given a certain STN. This is determined to be 180, as found by \texttt{ex6a.m}
+The STN is constructed from the paper provided and a specific function \texttt{de\-ter\-mine\-Flex\-From\-STN} has been implemented to determine the flexibility given a certain STN. For every value ($STN_{i,j}$) not equal to 10000 or on the diagonal, the following constraint $t_j - t_i \leq STN_{i,j}$ is added. After solving this problem with \texttt{linprog},  the flexibility is determined to be 180, as implemented in \texttt{ex6a.m}
 
 \subsubsection{Flexibility of the decoupled version}
 Analogously to section \ref{sec:flex_boerkoel_1}, the flexibility found by \texttt{ex6b.m} is now 135. This drop of 45 minutes is due entirely to a reduction in \emph{Bill}'s flexibility. The reduction process forced activity $R^{B}_{ST}$ to the point in time right in the middle of its previous interval. From here on the flexibility later in time is thus reduced from 120 tot 75 minutes.
 
 \subsubsection{Flexibility preserving decoupling}
 \label{sec:preserving_decoupling}
-To achieve a better decoupling the flexibility is again determined as the solution for maximum flexibility. There exist 4 different constraints between the partitions of the problem. Each of these constraints can be split into two subconstraints involving $z_0$. The results (which is determined in \texttt{ex6c.m}) are the following constraints in table \ref{table:constraints}
+To achieve a better decoupling the flexibility is again determined as the solution for maximum flexibility. There exist 4 different constraints between the partitions of the problem. Each of these constraints ($t_i - t_j \leq STN_{i,j}$) can be split into two subconstraints $t_i - z_0 \leq v_i^+$ and $z_0 - t_j \leq -v_j^-$. Here the $v$ values are the lower and upper bounds of the flexibility interval. The results of this entire process (which is determined in \texttt{ex6c.m}) are the constraints in table \ref{table:constraints}
 
 \begin{table}
 \centering
@@ -117,7 +116,9 @@ $z_0 - R^A_{ST} \leq $ & -480 & -480
 \end{table}
 
 \subsubsection{Decoupling for even distribution of flexibility}
-The algorithm is described in algorithm \ref{alg:decoupling}. Our code can be found in \texttt{ex6d.m}. The maximum flexibility for \emph{Chris} and \emph{Ann} is limited to 30, so \emph{Bill}'s is immediately found as 120. For this reason an easier manual implementation was done.
+The regular algorithm to solve this problem is described in algorithm \ref{alg:decoupling}. Our code can be found in \texttt{ex6d.m}. A manual implementation of an easier algorithm was done as the problem at hand provides some shortcuts. The maximum flexibility for each party is calculated with the added constraint that the original maximum has to be kept, and it is determined that the flexibility for \emph{Chris} and \emph{Ann} is limited to 30 and \emph{Bill}'s is found as 120. By the structure of the implementation, no extra iterations are needed. Also, no better distribution is possible. Using the \texttt{linprog} function to maximise the global flexibility with as extra constraint the here described local flexibilities.
+
+The extra constraints can again be derived as explained in section \ref{sec:preserving_decoupling}, for another 8 extra constraints. Interparty connections can now be removed. \\
 
 \noindent\makebox[\textwidth][c]{
 \begin{minipage}{0.8\textwidth}
@@ -140,7 +141,7 @@ The algorithm is described in algorithm \ref{alg:decoupling}. Our code can be fo
    }
   }
  }
- \caption{Algorithm for decoupling}
+ \caption{Algorithm for decoupling while preserving maximum flexibility}
  \label{alg:decoupling}
 \end{algorithm}
 \end{minipage}}
