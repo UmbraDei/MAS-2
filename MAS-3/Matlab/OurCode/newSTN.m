@@ -23,7 +23,6 @@ function output = newSTN(matrix, constraints)
     
     if sum(abs(diag(output)));
         output = 'Inconsistent';
-        return
     end 
 end
     
