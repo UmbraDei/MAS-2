@@ -31,6 +31,7 @@ f3 = [zeros(1, 2*(sizeSTN-1)*2/3), flexOverAll(1,1:2*(sizeSTN-1)/3)];
 
 ANew = [A;flexOverAll];
 bNew = [b;-flex];
+
 %% Probeer de vrijheid eerlijk te verdelen
 oplossing1 = linprog(f1, A, b, flexOverAll, -flex, lb, ub);
 freedom1 = -f1*oplossing1
@@ -40,3 +41,4 @@ freedom2 = -f2*oplossing2
 
 oplossing3 = linprog(f3, A, b, flexOverAll, -flex, lb, ub);
 freedom3 = -f3*oplossing3
+
