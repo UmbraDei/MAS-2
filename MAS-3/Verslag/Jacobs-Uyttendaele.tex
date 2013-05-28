@@ -24,14 +24,14 @@
 The first question focusses on using the \texttt{FastFloyd} algorithm to determine the earliest and latest starting times of the events specified. An implementation can be found in the \texttt{ex1.m} source file together with the \texttt{LoadMatrix} function.
 
 \subsection{Constraints}
-To add arbitrary STN-constraints the \texttt{newSTN} function is defined. It receives a constraint in the parameters and verifies that the constraint can be added without creating inconsistency. If so, the constraint is set in the matrix and the \texttt{FastFloyd} algorithm is applied again. To allow more efficient processing later on a matrix of constraints can also be entered that are checked in their entirety. An example testing the implementation can be found as \texttt{ex2.m}, that shows inconsistent and consistent constraints added to \texttt{stn5} and \texttt{snt49}.
+To add arbitrary STN-constraints the \texttt{newSTN} function is defined. It receives a constraint in the parameters and verifies that the constraint can be added without creating inconsistency. If so, the constraint is set in the matrix and the \texttt{FastFloyd} algorithm is applied again. An example testing this can be found as \texttt{ex2.m}.
 
 \subsection{Iterative schedule construction}
 \label{sec:iterative}
-To allow the construction of arbitrary schedules, an STN is loaded and the user is prompted for input. This is done in \texttt{ex3.m}. If the value entered isn't inside the allowed interval it is refused, and otherwise added to the resulting matrix and the \texttt{FastFloyd} algorithm is run to ensure the STN is updated. Appendix \ref{sec:app:iterative} shows a trace for the problem \texttt{stn49.tab}
+The
 
 \subsection{Schedule monitoring}
-For this question, a schedule is being checked as input step by step. As soon as a constraint is violated, the process stops and determines that the current input is invalid. Otherwise, the schedule is accepted as valid. \texttt{ex4.m} provides an implementation with a correct and incorrect size 145 input exported in table form, that are equal except for a value of 0 on $a_{42}$.
+A
 
 \section{Second Assignment}
 B
