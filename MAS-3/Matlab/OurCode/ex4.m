@@ -1,5 +1,5 @@
 inputSize = 145;
-resultMatrix = importdata('incorrect145.tab');
+resultMatrix = importdata('correct145.tab');
 
 stnMatrix = loadMatrix(inputSize);
 %resultMatrix = [0  0  4  2  5];
