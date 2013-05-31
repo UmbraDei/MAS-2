@@ -1,5 +1,5 @@
 function [solutions, flexibility] = determineFlexFromSTN(stn)
-    % Determine a solution and a freedom for a given stn.
+    % Determine a solution and a flexibility for a given stn.
     
    [sizeSTN, ~] = size(stn);
    

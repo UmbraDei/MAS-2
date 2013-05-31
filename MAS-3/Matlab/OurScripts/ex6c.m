@@ -1,4 +1,4 @@
-% Try to split the problem and calculate the freedom.
+% Try to split the problem and calculate the flexibility.
 
 %% 4 constraints between the 2 blocks!
 t1M = [3, 8, 6, 10];
@@ -20,7 +20,9 @@ tStrings = { 'a'; ... %1
 %% Calculate the STN and flex
 stn = opstellenSTN6a();
 [oplossing, flex] = determineFlexFromSTN(stn);
-oplossing = round(oplossing); %Afronden om inconsistenties te voorkomen.
+oplossing = round(oplossing); %Round to remove small inconsistenties 
+            % (t_i^+ - t_i^- is sometimes smaller as 0 (e.g. -10^-12) by
+            % rounding errors
 
 %% Add the constraints
 for i = 1:4

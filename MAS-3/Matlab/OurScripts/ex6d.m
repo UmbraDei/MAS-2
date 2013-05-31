@@ -21,17 +21,17 @@ bNew = [b;-flex];
 
 %% Try to divide the flex
 oplossing1 = linprog(f1, A, b, flexOverAll, -flex, lb, ub);
-freedom1 = -f1*oplossing1
+flexibility1 = -f1*oplossing1
 
 oplossing2 = linprog(f2, A, b, flexOverAll, -flex, lb, ub);
-freedom2 = -f2*oplossing2
+flexibility2 = -f2*oplossing2
 
 oplossing3 = linprog(f3, A, b, flexOverAll, -flex, lb, ub);
-freedom3 = -f3*oplossing3
+flexibility3 = -f3*oplossing3
 
 % With 2 as max flex 30, we cannot destribute the flexibility more.
 
-oplossing = linprog(flexOverAll, A, b, [f1;f2;f3], [-freedom1;-freedom2;-freedom3], lb, ub);
+oplossing = linprog(flexOverAll, A, b, [f1;f2;f3], [-flexibility1;-flexibility2;-flexibility3], lb, ub);
 
 oplossing 
 flex = flexOverAll*oplossing
