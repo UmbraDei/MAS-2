@@ -1,4 +1,4 @@
 addpath FastFloyd
-addpath OurCode
-addpath stnExamples
-addpath Deel-2
+addpath Input
+addpath OurFunctions
+addpath OurScripts

@@ -6,7 +6,7 @@ resultMatrix = zeros(1, inputSize);
 selectedIndices = [];
 
 global isAutomatic
-isAutomatic = 1;
+isAutomatic = 0;
 
 for i=2:inputSize
    [stnMatrix, index, value] = chooseValueSTN(stnMatrix, selectedIndices);

@@ -2,7 +2,7 @@
 % show you the first value that is invalid.
 
 inputSize = 145;
-resultMatrix = importdata('correct145.tab');
+resultMatrix = importdata('Output/correct145.tab');
 
 stnMatrix = loadMatrix(inputSize);
 %resultMatrix = [0  0  4  2  5];

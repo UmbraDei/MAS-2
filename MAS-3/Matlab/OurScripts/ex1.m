@@ -9,7 +9,7 @@ for i = 1:nbSizes
     maxTiming = O(1,:);
     minTiming = -O(:,1);
     
-    filename = strcat('min-max', num2str(possibleSizes(i)), '.txt');
+    filename = strcat('Output/min-max', num2str(possibleSizes(i)), '.txt');
     output = (transpose([maxTiming; transpose(minTiming)]));
     save(filename, 'output', '-ascii');
 end
